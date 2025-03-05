@@ -1,4 +1,4 @@
-package com.transaction_service;
+package com.transaction.service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
