@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@Service
+@RestController
 public class TransactionController {
 
     @Autowired
@@ -19,33 +19,35 @@ public class TransactionController {
 
     @GetMapping(path = "/transactions",params ={"accountNumber","transactionType","createdAt"} )
     public List<Transaction> getAllTransactionsByAccountNumberAndType
-            (@RequestParam String accountNumber,
-             @RequestParam (required = false) String transactionType,
-             @RequestParam(required = false) LocalDate createdAt) {
+            (@Validated @RequestParam String accountNumber,
+             @Validated @RequestParam (required = false) String transactionType,
+             @Validated@RequestParam(required = false) LocalDate createdAt) {
         return transactionService.getAllTransactionsByAccountNumberAndType(accountNumber, transactionType, createdAt);
     }
 
     @PostMapping(path = "/transactions")
-    public Transaction addTransaction(@Validated @RequestBody Transaction transaction) {
-        return transactionService.addTransaction(transaction);
+    public Transaction saveTransaction(@Validated @RequestBody Transaction transaction) {
+        return transactionService.saveTransaction(transaction);
     }
 
     @DeleteMapping(path = "/transactions/{id}")
     public String deleteTransactionById(@PathVariable int id) {
-       return transactionService.deleteTransactionById(id);
+       return transactionService.softDeleteTransactionById(id,0);
     }
 
-    @GetMapping(path = "/Transaction/{id}")
+    @GetMapping(path = "/transaction/{id}")
     public Transaction getTransactionById(@PathVariable int id) {
         return transactionService.getTransactionById(id);
     }
 
-    @PatchMapping(path = "/Transaction/{id}")
-    public String updateTransactionStatusById(@PathVariable int id ,@RequestParam String transactionStatus){
+    @PatchMapping(path = "/transaction/{id}")
+    public String updateTransactionStatusById(@Validated @PathVariable int id ,@RequestParam String transactionStatus){
         return transactionService.updateTransactionStatusById(id,transactionStatus);
     }
 
-
-
+    @PatchMapping(path = "/transaction/reset-soft-delete")
+    public String restSoftDeleteTransactions(){
+        return transactionService.resetSoftDeletedTransactions();
+    }
 
 }

@@ -4,6 +4,7 @@ import com.transaction.service.controller.TransactionController;
 import com.transaction.service.entity.Transaction;
 import com.transaction.service.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,7 +12,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Service
 public class TransactionService {
 
     @Autowired
@@ -21,13 +22,14 @@ public class TransactionService {
         return transactionRepository.getAllTransactionsByAccountNumberAndType(accountNumber,transactionType,createdAt);
     }
 
-    public Transaction addTransaction(Transaction transaction) {
+    public Transaction saveTransaction(Transaction transaction) {
         return transactionRepository.save(transaction);
     }
 
-    public String deleteTransactionById(int id) {
+    public String softDeleteTransactionById(int id,int isActive) {
         boolean isExisting = transactionRepository.existsById(id);
-        if (isExisting) {transactionRepository.deleteById(id) ;return "Transaction with id " + id + " was deleted";}
+        if (isExisting) {transactionRepository.softDeleteTransactionById(id,isActive);
+            return "Transaction with id " + id + " was soft deleted";}
         return "Transaction with id " + id + " was not found";
     }
 
@@ -41,5 +43,11 @@ public class TransactionService {
        int affectedRows = transactionRepository.updateTransactionStatusById(id,status);
        if(affectedRows == 1) {return "Transaction Status with id " + id + " was updated";}
        return "Transaction Status with id " + id + " was not found";
+    }
+
+    public String resetSoftDeletedTransactions() {
+        int affectedRows = transactionRepository.resetSoftDeletedTransactions();
+        if(affectedRows >= 1) {return "Successfully reset soft deleted transactions";}
+        return "No soft deleted transaction found";
     }
 }

@@ -32,6 +32,17 @@ public class Transaction {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    public int getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(int isActive) {
+        this.isActive = isActive;
+    }
+
+    @Column(name = "is_active")
+    private int isActive;
+
     public int getTransactionId() {
         return transactionId;
     }
