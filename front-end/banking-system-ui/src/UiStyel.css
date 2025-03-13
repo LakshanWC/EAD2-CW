@@ -1,0 +1,28 @@
+/* Ensuring the login container takes up full height */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensures the height of the container is at least 100% of the viewport height */
+}
+
+.center-middle {
+    flex-grow: 1; /* This allows the main content to take up available space */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.center-box {
+    border: 1px solid #716767;
+    padding: 20px;
+    border: 3px solid #716767;
+    text-align: center;
+    box-shadow: 1px 2px 3px 1px rgba(0, 0, 0, 0.6);
+}
+
+.page-footer {
+    background-color: #7b5fc4;
+    padding: 10px;
+    text-align: center;
+    margin-top: auto; /* Pushes the footer to the bottom */
+}
