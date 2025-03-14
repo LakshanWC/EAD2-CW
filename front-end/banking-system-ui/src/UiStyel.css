@@ -26,3 +26,30 @@
     text-align: center;
     margin-top: auto; /* Pushes the footer to the bottom */
 }
+
+.login-bar{
+    background-color: #7b5fc4;
+    padding: 20px;
+}
+
+.nav-bar-line{
+    background-color: #7b5fc4;
+    padding: 5px;
+}
+
+.nav-button{
+    width: 100px;
+    height: 50px;
+    background-color: #A28DD6;
+    font-size: 15px;
+    margin-right: 10px;
+
+}
+.nav-aline-right{
+    position: absolute;
+    right: 10px; /* Moves it to the right corner */
+    width: 100px;
+    height: 50px;
+    background-color: #A28DD6;
+    font-size: 15px;
+}

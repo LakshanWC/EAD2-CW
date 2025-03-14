@@ -12,16 +12,16 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class TransactionController {
 
     @Autowired
     private TransactionService transactionService;
-
-    @GetMapping(path = "/transactions",params ={"accountNumber","transactionType","createdAt"} )
-    public List<Transaction> getAllTransactionsByAccountNumberAndType
-            (@Validated @RequestParam String accountNumber,
-             @Validated @RequestParam (required = false) String transactionType,
-             @Validated@RequestParam(required = false) LocalDate createdAt) {
+    @GetMapping(path = "/transactions")
+    public List<Transaction> getAllTransactionsByAccountNumberAndType(
+            @Validated @RequestParam String accountNumber,
+            @Validated @RequestParam(required = false) String transactionType,
+            @Validated @RequestParam(required = false) LocalDate createdAt) {
         return transactionService.getAllTransactionsByAccountNumberAndType(accountNumber, transactionType, createdAt);
     }
 
@@ -34,6 +34,8 @@ public class TransactionController {
     public String deleteTransactionById(@PathVariable int id) {
        return transactionService.softDeleteTransactionById(id,0);
     }
+
+    //http://localhost:8081/transaction-service/transaction/1
 
     @GetMapping(path = "/transaction/{id}")
     public Transaction getTransactionById(@PathVariable int id) {
