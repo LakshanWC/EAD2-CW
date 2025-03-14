@@ -29,15 +29,16 @@ public class AccountController {
             @RequestParam String accountNumber,
             @RequestParam BigDecimal amount,
             @RequestParam String operation){
-        accountService.updateBalance(accountNumber, amount, operation);
-        return ResponseEntity.ok("Balance updated successfully");
+        return accountService.updateBalance(accountNumber, amount, operation);
+
     }
 
     //check status
+    /*
     @GetMapping("/status")
     public String checkStatus(@RequestParam String accountNumber){
         return accountService.checkStatus(accountNumber);
-    }
+    }*/
 
     //update status
     @PostMapping("/upStatus")
