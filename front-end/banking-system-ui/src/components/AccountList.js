@@ -1,13 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./AccountList.css"; // CSS for styling
 
 function AccountList() {
     const [accountNumber, setAccountNumber] = useState("");
     const [accountDetails, setAccountDetails] = useState(null);
+    const [accounts, setAccounts] = useState([]);
     const [error, setError] = useState("");
     const [showForm, setShowForm] = useState(false); // Track whether to show the form
     const [isLoading, setIsLoading] = useState(false); // Track loading state
+
+    // Fetch all accounts on component mount
+    useEffect(() => {
+        axios.get("http://localhost:8080/account-service/accounts")
+            .then((response) => setAccounts(response.data))
+            .catch((error) => console.error("Error fetching accounts:", error));
+    }, []);
 
     const handleViewBalance = async (e) => {
         e.preventDefault();
@@ -31,7 +39,7 @@ function AccountList() {
             console.log("Response from backend:", response);
 
             if (response.data) {
-                setAccountDetails(response.data);
+                setAccountDetails(response.data); // Set account details in state
             } else {
                 setError("Account not found. Please enter a valid account number.");
             }
@@ -91,6 +99,18 @@ function AccountList() {
                     {error && <p className="error-message">{error}</p>}
                 </form>
             )}
+
+            <h2>All Accounts List</h2>
+            <ul>
+                {accounts.map((account) => (
+                    <li key={account.accId}>
+                        <strong>Account Number:</strong> {account.accountNumber} <br />
+                        <strong>Balance:</strong> {account.balance} <br />
+                        <strong>Status:</strong> {account.status} <br />
+                        <hr />
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 }
