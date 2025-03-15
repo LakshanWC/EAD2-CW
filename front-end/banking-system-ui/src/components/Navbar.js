@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 // src/components/Navbar.js
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -47,3 +48,18 @@ function Navbar({ currentUser }) {
 }
 
 export default Navbar;
+=======
+import React from "react";
+import {Link} from "react-router-dom";
+import "./Navbar.css";
+
+function Navbar({currentUser}){
+    return(
+        <nav classname="navbar">
+            <div className="navbar-logo">
+                <Link to="/">Account Service</Link>
+            </div>
+        </nav>
+    )
+}
+>>>>>>> Stashed changes
