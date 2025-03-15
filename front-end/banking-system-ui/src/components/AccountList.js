@@ -1,13 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./AccountList.css"; // CSS for styling
 
 function AccountList() {
     const [accountNumber, setAccountNumber] = useState("");
     const [accountDetails, setAccountDetails] = useState(null);
+    const [accounts, setAccounts] = useState([]);
     const [error, setError] = useState("");
     const [showForm, setShowForm] = useState(false); // Track whether to show the form
     const [isLoading, setIsLoading] = useState(false); // Track loading state
+
+    // Fetch all accounts on component mount
+    useEffect(() => {
+        axios.get("http://localhost:8080/account-service/accounts")
+            .then((response) => setAccounts(response.data))
+            .catch((error) => console.error("Error fetching accounts:", error));
+    }, []);
 
     const handleViewBalance = async (e) => {
         e.preventDefault();
@@ -23,18 +31,15 @@ function AccountList() {
         try {
             console.log("Fetching account details for:", accountNumber);
 
-            // Mock the backend response (replace this with the actual API call later)
-            const mockResponse = {
-                accountNumber: "11110",
-                accountType: "Savings",
-                balance: 1000,
-                status: "Active"
-            };
+            // Make the API call to fetch account details
+            const response = await axios.get(
+                `http://localhost:8080/account-service/accounts/balance?accountNumber=${accountNumber}`
+            );
 
-            console.log("Mock response from backend:", mockResponse);
+            console.log("Response from backend:", response);
 
-            if (mockResponse) {
-                setAccountDetails(mockResponse); // Set account details in state
+            if (response.data) {
+                setAccountDetails(response.data); // Set account details in state
             } else {
                 setError("Account not found. Please enter a valid account number.");
             }
@@ -94,6 +99,18 @@ function AccountList() {
                     {error && <p className="error-message">{error}</p>}
                 </form>
             )}
+
+            <h2>All Accounts List</h2>
+            <ul>
+                {accounts.map((account) => (
+                    <li key={account.accId}>
+                        <strong>Account Number:</strong> {account.accountNumber} <br />
+                        <strong>Balance:</strong> {account.balance} <br />
+                        <strong>Status:</strong> {account.status} <br />
+                        <hr />
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 }

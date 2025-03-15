@@ -67,7 +67,7 @@ function App() {
                     />
 
                     {/* Account Microservice */}
-                  <Route
+                    <Route
                         path="/account/*"
                         element={
                             isLoggedIn ? (
