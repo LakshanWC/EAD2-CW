@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 import React, { useState } from "react";
 import axios from "axios";
 import "./AccountList.css"; // CSS for styling
@@ -24,15 +23,18 @@ function AccountList() {
         try {
             console.log("Fetching account details for:", accountNumber);
 
-            // Make the API call to fetch account details
-            const response = await axios.get(
-                `http://localhost:8080/account-service/accounts/balance?accountNumber=${accountNumber}`
-            );
+            // Mock the backend response (replace this with the actual API call later)
+            const mockResponse = {
+                accountNumber: "11110",
+                accountType: "Savings",
+                balance: 1000,
+                status: "Active"
+            };
 
-            console.log("Response from backend:", response);
+            console.log("Mock response from backend:", mockResponse);
 
-            if (response.data) {
-                setAccountDetails(response.data);
+            if (mockResponse) {
+                setAccountDetails(mockResponse); // Set account details in state
             } else {
                 setError("Account not found. Please enter a valid account number.");
             }
@@ -92,34 +94,6 @@ function AccountList() {
                     {error && <p className="error-message">{error}</p>}
                 </form>
             )}
-=======
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-
-function AccountList() {
-    const [accounts, setAccounts] = useState([]);
-
-    useEffect(() => {
-        // Fetch accounts from the backend
-        axios.get("http://localhost:8080/accounts")
-            .then((response) => setAccounts(response.data))
-            .catch((error) => console.error("Error fetching accounts:", error));
-    }, []);
-
-    return (
-        <div>
-            <h1>All Accounts</h1>
-            <ul>
-                {accounts.map((account) => (
-                    <li key={account.accId}>
-                        <strong>Account Number:</strong> {account.accountNumber} <br />
-                        <strong>Balance:</strong> {account.balance} <br />
-                        <strong>Status:</strong> {account.status} <br />
-                        <hr />
-                    </li>
-                ))}
-            </ul>
->>>>>>> Stashed changes
         </div>
     );
 }

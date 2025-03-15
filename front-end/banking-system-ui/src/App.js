@@ -1,16 +1,10 @@
-<<<<<<< Updated upstream
 // src/App.js
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes, Link, Navigate } from "react-router-dom";
-import Login from "./Login"; // Import the Login microservice
-import AccountNavbar from "./components/Navbar"; // Import the Account microservice's navbar
-import AccountList from "./components/AccountList"; // Import the Account microservice's main component
-=======
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from "./Login";  // Import the Login component
-import Home from "./Home";    // Import the Home component
-import AccountList from "./components/AccountList";
->>>>>>> Stashed changes
+import Login from "./Login"; // Import the Login component
+import Home from "./Home"; // Import the Home component
+import AccountList from "./components/AccountList"; // Import the AccountList component
+import AccountNavbar from "./components/Navbar"; // Import the Navbar component
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login status
@@ -24,7 +18,6 @@ function App() {
 
     return (
         <Router>
-<<<<<<< Updated upstream
             <div>
                 {/* Show microservice buttons only if logged in */}
                 {isLoggedIn && (
@@ -65,7 +58,7 @@ function App() {
                             isLoggedIn ? (
                                 <>
                                     <AccountNavbar currentUser={currentUser} />
-                                    <h1>Welcome to ABC Bank</h1>
+                                    <Home />
                                 </>
                             ) : (
                                 <Navigate to="/" /> // Redirect to Login if not logged in
@@ -74,7 +67,7 @@ function App() {
                     />
 
                     {/* Account Microservice */}
-                    <Route
+                  <Route
                         path="/account/*"
                         element={
                             isLoggedIn ? (
@@ -92,7 +85,7 @@ function App() {
                         }
                     />
 
-                    {/* User Microservice */}
+                    {/* Loan Microservice */}
                     <Route
                         path="/loan"
                         element={
@@ -117,13 +110,6 @@ function App() {
                     />
                 </Routes>
             </div>
-=======
-            <Routes>
-                <Route path="/" element={<Login />} />
-                <Route path="/home" element={<Home />} />
-                <Route path="/components" element={<AccountList />}/>
-            </Routes>
->>>>>>> Stashed changes
         </Router>
     );
 }
