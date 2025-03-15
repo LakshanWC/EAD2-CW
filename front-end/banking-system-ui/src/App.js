@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes, Link, Navigate } from "react-router-dom";
 import Login from "./Login"; // Import the Login microservice
+import Home from "./Home";
 import AccountNavbar from "./components/Navbar"; // Import the Account microservice's navbar
 import AccountList from "./components/AccountList"; // Import the Account microservice's main component
 
@@ -57,7 +58,8 @@ function App() {
                             isLoggedIn ? (
                                 <>
                                     <AccountNavbar currentUser={currentUser} />
-                                    <h1>Welcome to ABC Bank</h1>
+                                    {/* <h1>Welcome to ABC Bank</h1> */}
+                                    <Home/>
                                 </>
                             ) : (
                                 <Navigate to="/" /> // Redirect to Login if not logged in
