@@ -1,4 +1,3 @@
-// src/App.js
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes, Link, Navigate } from "react-router-dom";
 import Login from "./Login"; // Import the Login component
@@ -6,6 +5,9 @@ import Home from "./Home"; // Import the Home component
 import AccountList from "./components/AccountList"; // Import the AccountList component
 import AccountNavbar from "./components/Navbar"; // Import the Navbar component
 
+/*---------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------*/
+ 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login status
     const [currentUser, setCurrentUser] = useState(null); // Track current user

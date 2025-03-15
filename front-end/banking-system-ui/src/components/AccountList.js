@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./AccountList.css"; // CSS for styling
@@ -13,10 +14,22 @@ function AccountList() {
     // Fetch all accounts on component mount
     useEffect(() => {
         axios.get("http://localhost:8080/account-service/accounts")
+=======
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
+function AccountList() {
+    const [accounts, setAccounts] = useState([]);
+
+    useEffect(() => {
+        // Fetch accounts from the backend
+        axios.get("http://localhost:8080/accounts")
+>>>>>>> Stashed changes
             .then((response) => setAccounts(response.data))
             .catch((error) => console.error("Error fetching accounts:", error));
     }, []);
 
+<<<<<<< Updated upstream
     const handleViewBalance = async (e) => {
         e.preventDefault();
         if (!accountNumber) {
@@ -101,6 +114,11 @@ function AccountList() {
             )}
 
             <h2>All Accounts List</h2>
+=======
+    return (
+        <div>
+            <h1>All Accounts</h1>
+>>>>>>> Stashed changes
             <ul>
                 {accounts.map((account) => (
                     <li key={account.accId}>
