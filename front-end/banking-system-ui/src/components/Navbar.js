@@ -1,5 +1,4 @@
 import React from "react";
-<<<<<<< Updated upstream
 import { Link, useLocation } from "react-router-dom";
 import "./Navbar.css";
 
@@ -47,17 +46,3 @@ function Navbar({ currentUser }) {
 }
 
 export default Navbar;
-=======
-import {Link} from "react-router-dom";
-import "./Navbar.css";
-
-function Navbar({currentUser}){
-    return(
-        <nav classname="navbar">
-            <div className="navbar-logo">
-                <Link to="/">Account Service</Link>
-            </div>
-        </nav>
-    )
-}
->>>>>>> Stashed changes

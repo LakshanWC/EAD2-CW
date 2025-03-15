@@ -3,10 +3,16 @@ import { BrowserRouter as Router, Route, Routes, Link, Navigate } from "react-ro
 import Login from "./Login"; // Import the Login component
 import Home from "./Home"; // Import the Home component
 import AccountList from "./components/AccountList"; // Import the AccountList component
-import AccountNavbar from "./components/Navbar"; // Import the Navbar component
+import AccountNavbar from "./components/Navbar";
 
-/*---------------------------------------------------------------------------------------------------------------------------------------------------------
-------------------*/
+import TransactionOverview from "./transaction-components/TransactionOverview";
+import TransactionHistory from "./transaction-components/TransactionHistory";
+import Transfer from "./transaction-components/Transfer";
+import TransferPage from "./transaction-components/Transfer";
+
+
+
+
  
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login status
@@ -101,12 +107,19 @@ function App() {
 
                     {/* Transaction Microservice */}
                     <Route
-                        path="/transaction"
+                        path="/transaction/*"
                         element={
                             isLoggedIn ? (
-                                <h1>Transaction Microservice</h1>
+                                <>
+                                    <h1>Transaction Microservice</h1>
+                                    <Routes>
+                                        <Route path="/" element={<TransactionOverview />} />
+                                        <Route path="transfer" element={<Transfer />} />
+                                        <Route path="history" element={<TransactionHistory />} /> {/* Add this route */}
+                                    </Routes>
+                                </>
                             ) : (
-                                <Navigate to="/" /> // Redirect to Login if not logged in
+                                <Navigate to="/" />
                             )
                         }
                     />
