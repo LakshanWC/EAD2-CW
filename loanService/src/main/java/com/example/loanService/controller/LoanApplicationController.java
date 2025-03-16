@@ -1,4 +1,5 @@
 package com.example.loanService.controller;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.loanService.entity.LoanApplication;
 import com.example.loanService.entity.LoanStatus;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/loan")
+@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", allowCredentials = "true")
 public class LoanApplicationController {
 
     private final LoanApplicationService service;
@@ -57,4 +59,8 @@ public class LoanApplicationController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+
+
+
+
 }

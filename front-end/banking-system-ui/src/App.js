@@ -8,12 +8,14 @@ import AccountNavbar from "./components/Navbar";
 import TransactionOverview from "./transaction-components/TransactionOverview";
 import TransactionHistory from "./transaction-components/TransactionHistory";
 import Transfer from "./transaction-components/Transfer";
-import TransferPage from "./transaction-components/Transfer";
 
+// Import Loan Service Components
+import LoanOverview from "./components/loanService-components/LoanOverview";
+import LoanApplicationForm from "./components/loanService-components/LoanApplicationForm";
+import LoanCalculator from "./components/loanService-components/LoanCalculator";
+import LoanStatus from "./components/loanService-components/LoanStatus";
+import LoanApplicationDelete from "./components/loanService-components/LoanApplicationDelete";
 
-
-
- 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login status
     const [currentUser, setCurrentUser] = useState(null); // Track current user
@@ -39,7 +41,7 @@ function App() {
                         <Link to="/transaction">
                             <button>Transaction Service</button>
                         </Link>
-                        <Link to="/loan">
+                        <Link to="/loan-service">
                             <button>Loan Service</button>
                         </Link>
                     </div>
@@ -94,16 +96,21 @@ function App() {
                     />
 
                     {/* Loan Microservice */}
-                    <Route
-                        path="/loan"
-                        element={
-                            isLoggedIn ? (
-                                <h1>Loan Microservice</h1>
-                            ) : (
-                                <Navigate to="/" /> // Redirect to Login if not logged in
-                            )
-                        }
-                    />
+                    <Route path="/loan-service/*" element={
+                        isLoggedIn ? (
+                            <>
+                                <Routes>
+                                    <Route path="/" element={<LoanOverview />} /> {/* Default route */}
+                                    <Route path="apply" element={<LoanApplicationForm />} /> {/* Apply route */}
+                                    <Route path="calculator" element={<LoanCalculator />} /> {/* Calculator route */}
+                                    <Route path="status" element={<LoanStatus />} /> {/* Status route */}
+                                    <Route path="delete" element={<LoanApplicationDelete />} /> {/* Delete route */}
+                                </Routes>
+                            </>
+                        ) : (
+                            <Navigate to="/" /> // Redirect to Login if not logged in
+                        )
+                    } />
 
                     {/* Transaction Microservice */}
                     <Route
@@ -115,7 +122,7 @@ function App() {
                                     <Routes>
                                         <Route path="/" element={<TransactionOverview />} />
                                         <Route path="transfer" element={<Transfer />} />
-                                        <Route path="history" element={<TransactionHistory />} /> {/* Add this route */}
+                                        <Route path="history" element={<TransactionHistory />} />
                                     </Routes>
                                 </>
                             ) : (

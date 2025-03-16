@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, {useState, useEffect} from "react";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
 
 const TransactionHistory = () => {
@@ -131,7 +131,8 @@ const TransactionHistory = () => {
                         </thead>
                         <tbody>
                         {withdrawals.map((item, index) => (
-                            <tr key={item.transactionId} style={{ backgroundColor: index % 2 === 0 ? "#f2f2f2" : "white" }}>
+                            <tr key={item.transactionId}
+                                style={{backgroundColor: index % 2 === 0 ? "#f2f2f2" : "white"}}>
                                 <td>{item.transactionId}</td>
                                 <td>{item.accountNumber}</td>
                                 <td>{item.transactionType}</td>
@@ -163,7 +164,8 @@ const TransactionHistory = () => {
                         </thead>
                         <tbody>
                         {transfers.map((item, index) => (
-                            <tr key={item.transactionId} style={{ backgroundColor: index % 2 === 0 ? "#f2f2f2" : "white" }}>
+                            <tr key={item.transactionId}
+                                style={{backgroundColor: index % 2 === 0 ? "#f2f2f2" : "white"}}>
                                 <td>{item.transactionId}</td>
                                 <td>{item.accountNumber}</td>
                                 <td>{item.transactionType}</td>
@@ -195,7 +197,8 @@ const TransactionHistory = () => {
                         </thead>
                         <tbody>
                         {deposits.map((item, index) => (
-                            <tr key={item.transactionId} style={{ backgroundColor: index % 2 === 0 ? "#f2f2f2" : "white" }}>
+                            <tr key={item.transactionId}
+                                style={{backgroundColor: index % 2 === 0 ? "#f2f2f2" : "white"}}>
                                 <td>{item.transactionId}</td>
                                 <td>{item.accountNumber}</td>
                                 <td>{item.transactionType}</td>
