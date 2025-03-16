@@ -8,11 +8,12 @@ function TransferPage() {
     const [sourceMessage, setSourceMessage] = useState("");
     const [destinationMessage, setDestinationMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState(""); // New state for success message
+    const [transactionStatus, setTransactionStatus] = useState(""); // Track transaction status
 
     // Function to validate an account number
     const validateAccount = async (accountNumber, setMessage, label) => {
         try {
-            const response = await fetch(`http://localhost:8081/transaction-service/accounts/${accountNumber}`);
+            const response = await fetch(`http://localhost:8085/transaction-service/accounts/${accountNumber}`);
             if (!response.ok) {
                 throw new Error("Account validation failed");
             }
@@ -35,7 +36,7 @@ function TransferPage() {
     const checkBalance = async (accountNumber, amount) => {
         try {
             const response = await fetch(
-                `http://localhost:8081/transaction-service/accounts/${accountNumber}/balance?amount=${amount}`
+                `http://localhost:8085/transaction-service/accounts/${accountNumber}/balance?amount=${amount}`
             );
 
             if (!response.ok) {
@@ -91,20 +92,27 @@ function TransferPage() {
             return;
         }
 
-        // If all validations pass, proceed with the transfer
+        // Define a threshold for large transactions
+        const largeTransactionThreshold = 300000; // Threshold set to 300,000
+
+        // Determine the transaction status based on the amount
+        const status = amount > largeTransactionThreshold ? "ON HOLD" : "SUCCESS";
+        setTransactionStatus(status); // Set transaction status
+
+        // Prepare the transaction data
         const transactionData = {
             accountNumber: sourceAccount,
             destinationAccountNumber: destinationAccount,
             transactionType: "TRANSFER",
             amount: parseFloat(amount), // Ensure amount is a number
-            status: "PENDING",
+            status: status, // Set status based on the amount
             createdAt: new Date().toISOString(), // Current date and time in ISO format
             isActive: 1,
         };
 
         try {
             // Save the transaction
-            const response = await fetch("http://localhost:8081/transaction-service/transactions", {
+            const response = await fetch("http://localhost:8085/transaction-service/transactions", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -119,28 +127,33 @@ function TransferPage() {
             const result = await response.json();
             console.log("Transaction saved successfully:", result);
 
-            // Subtract the amount from the source account
-            const subtractResponse = await fetch(
-                `http://localhost:8081/transaction-service/accounts/${sourceAccount}?amount=${amount}&addAmount=false`,
-                {
-                    method: "PATCH",
+            // Only update balances if the transaction is not on hold
+            if (status !== "ON HOLD") {
+                // Subtract the amount from the source account
+                const subtractResponse = await fetch(
+                    `http://localhost:8085/transaction-service/accounts/${sourceAccount}?amount=${amount}&addAmount=false`,
+                    {
+                        method: "PATCH",
+                    }
+                );
+
+                if (!subtractResponse.ok) {
+                    throw new Error("Failed to subtract amount from source account");
                 }
-            );
 
-            if (!subtractResponse.ok) {
-                throw new Error("Failed to subtract amount from source account");
-            }
+                // Add the amount to the destination account
+                const addResponse = await fetch(
+                    `http://localhost:8085/transaction-service/accounts/${destinationAccount}?amount=${amount}&addAmount=true`,
+                    {
+                        method: "PATCH",
+                    }
+                );
 
-            // Add the amount to the destination account
-            const addResponse = await fetch(
-                `http://localhost:8081/transaction-service/accounts/${destinationAccount}?amount=${amount}&addAmount=true`,
-                {
-                    method: "PATCH",
+                if (!addResponse.ok) {
+                    throw new Error("Failed to add amount to destination account");
                 }
-            );
 
-            if (!addResponse.ok) {
-                throw new Error("Failed to add amount to destination account");
+                console.log("Balances updated successfully.");
             }
 
             // Reset form fields
@@ -148,9 +161,17 @@ function TransferPage() {
             setDestinationAccount("");
             setAmount("");
             setError(""); // Clear any errors
-            setSuccessMessage("Transfer successful!"); // Set success message
 
-            console.log("Balances updated successfully.");
+            // Set success message based on status
+            if (status === "ON HOLD") {
+                setSuccessMessage(
+                    "Your transaction has been placed on hold as it has been flagged as suspicious behavior. " +
+                    "Please contact support or wait for an admin to confirm your transaction."
+                );
+            } else {
+                setSuccessMessage("Transfer successful!");
+            }
+
         } catch (error) {
             console.error("Error processing transaction:", error);
             setError("Failed to process the transaction. Please try again.");
@@ -162,7 +183,11 @@ function TransferPage() {
             <h1 style={styles.title}>Transfer Page</h1>
             <p style={styles.subtitle}>Here you can transfer money between accounts.</p>
             {error && <p style={styles.error}>{error}</p>}
-            {successMessage && <p style={styles.success}>{successMessage}</p>} {/* Display success message */}
+            {successMessage && (
+                <p style={transactionStatus === "ON HOLD" ? styles.onHoldMessage : styles.success}>
+                    {successMessage}
+                </p>
+            )}
             <form onSubmit={handleSubmit} style={styles.form}>
                 <div style={styles.inputGroup}>
                     <label htmlFor="sourceAccount" style={styles.label}>
@@ -288,6 +313,11 @@ const styles = {
     },
     success: {
         color: "green",
+        marginBottom: "15px",
+    },
+    onHoldMessage: {
+        color: "red",
+        fontWeight: "bold",
         marginBottom: "15px",
     },
 };

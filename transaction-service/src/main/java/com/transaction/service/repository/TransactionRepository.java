@@ -14,8 +14,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 
     @Query("SELECT t FROM Transaction t WHERE t.accountNumber=?1 " +
             "AND (?2 is NULL OR t.transactionType = ?2) " +
-            "AND(?3 is NULL OR t.createdAt = ?3) AND t.isActive=1")
-    public List<Transaction> getTransactionsByFilters(String accountNumber,String transactionType,LocalDate createdAt);
+            "AND t.isActive=1")
+    public List<Transaction> getTransactionsByFilters(String accountNumber,String transactionType);
 
 
     @Modifying

@@ -18,8 +18,8 @@ public class TransactionService {
     @Autowired
     private TransactionRepository transactionRepository;
 
-    public List<Transaction> getTransactionsByFilters(String accountNumber, String transactionType, LocalDate createdAt) {
-        return transactionRepository.getTransactionsByFilters(accountNumber,transactionType,createdAt);
+    public List<Transaction> getTransactionsByFilters(String accountNumber, String transactionType) {
+        return transactionRepository.getTransactionsByFilters(accountNumber,transactionType);
     }
 
     public Transaction saveTransaction(Transaction transaction) {

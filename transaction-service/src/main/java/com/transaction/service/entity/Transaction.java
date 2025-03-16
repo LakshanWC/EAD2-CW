@@ -3,6 +3,7 @@ package com.transaction.service.entity;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -30,7 +31,7 @@ public class Transaction {
     private String status;
 
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
     public int getIsActive() {
         return isActive;
@@ -91,11 +92,11 @@ public class Transaction {
         this.status = status;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public LocalDate getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
 }

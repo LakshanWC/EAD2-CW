@@ -8,6 +8,7 @@ function WithdrawDepositPage() {
     const [amount, setAmount] = useState("");
     const [error, setError] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
+    const [transactionStatus, setTransactionStatus] = useState(""); // Track transaction status
 
     const isWithdraw = location.pathname === "/transaction/withdraw";
     const isDeposit = location.pathname === "/transaction/deposit";
@@ -15,7 +16,7 @@ function WithdrawDepositPage() {
     // Function to check if the account is valid
     const checkAccountValidity = async (accountNumber) => {
         try {
-            const response = await axios.get(`http://localhost:8081/transaction-service/accounts/${accountNumber}`);
+            const response = await axios.get(`http://localhost:8085/transaction-service/accounts/${accountNumber}`);
             const accountStatus = response.data;
 
             if (accountStatus === "Account Not Found") {
@@ -38,20 +39,20 @@ function WithdrawDepositPage() {
     };
 
     // Function to save the transaction
-    const saveTransaction = async (accountNumber, transactionType, amount) => {
+    const saveTransaction = async (accountNumber, transactionType, amount, status) => {
         try {
             const transactionPayload = {
                 accountNumber: accountNumber,
                 destinationAccountNumber: null, // No destination account for withdrawals/deposits
                 transactionType: transactionType.toUpperCase(), // "WITHDRAW" or "DEPOSIT"
                 amount: amount,
-                status: "PENDING",
+                status: status, // "SUCCESS" or "ON HOLD"
                 createdAt: new Date().toISOString(), // Current date and time
                 isActive: 1
             };
 
             const response = await axios.post(
-                "http://localhost:8081/transaction-service/transactions",
+                "http://localhost:8085/transaction-service/transactions",
                 transactionPayload
             );
 
@@ -88,7 +89,7 @@ function WithdrawDepositPage() {
         // If it's a withdrawal, check if the account has sufficient balance
         if (isWithdraw) {
             try {
-                const response = await axios.get(`http://localhost:8081/transaction-service/accounts/${accountNumber}/balance`, {
+                const response = await axios.get(`http://localhost:8085/transaction-service/accounts/${accountNumber}/balance`, {
                     params: { amount: amount }
                 });
                 console.log("Balance check response:", response.data); // Debugging line
@@ -103,11 +104,40 @@ function WithdrawDepositPage() {
             }
         }
 
-        // If all checks pass, proceed with the transaction
+        // Define a threshold for large transactions
+        const largeTransactionThreshold = 300000; // Threshold set to 300,000
+
+        // Determine the transaction status based on the amount
+        const status = amount > largeTransactionThreshold ? "ON HOLD" : "SUCCESS";
+        setTransactionStatus(status); // Set transaction status
+
+        // If the transaction is ON HOLD, save it and notify the user
+        if (status === "ON HOLD") {
+            try {
+                const transactionType = isWithdraw ? "WITHDRAW" : "DEPOSIT";
+                await saveTransaction(accountNumber, transactionType, amount, status);
+
+                // Clear the input fields
+                setAccountNumber("");
+                setAmount("");
+
+                // Display ON HOLD message
+                setSuccessMessage(
+                    "Your transaction has been placed on hold as it has been flagged as suspicious behavior. " +
+                    "Please contact support or wait for an admin to confirm your transaction."
+                );
+            } catch (error) {
+                console.error("Error saving transaction:", error);
+                setError("An error occurred while saving the transaction.");
+            }
+            return; // Exit the function after placing the transaction ON HOLD
+        }
+
+        // If the transaction is below the threshold, proceed as usual
         try {
             const addAmount = isDeposit; // true for deposit, false for withdrawal
             const response = await axios.patch(
-                `http://localhost:8081/transaction-service/accounts/${accountNumber}`,
+                `http://localhost:8085/transaction-service/accounts/${accountNumber}`,
                 {}, // No request body needed
                 {
                     params: {
@@ -120,7 +150,7 @@ function WithdrawDepositPage() {
             if (response.status === 200) {
                 // Save the transaction after a successful withdrawal or deposit
                 const transactionType = isWithdraw ? "WITHDRAW" : "DEPOSIT";
-                await saveTransaction(accountNumber, transactionType, amount);
+                await saveTransaction(accountNumber, transactionType, amount, status);
 
                 // Clear the input fields
                 setAccountNumber("");
@@ -142,7 +172,11 @@ function WithdrawDepositPage() {
             <h1 style={styles.title}>{isWithdraw ? "Withdraw" : "Deposit"}</h1>
             <p style={styles.subtitle}>Please enter the details for your transaction.</p>
             {error && <p style={styles.error}>{error}</p>}
-            {successMessage && <p style={styles.success}>{successMessage}</p>}
+            {successMessage && (
+                <p style={transactionStatus === "ON HOLD" ? styles.onHoldMessage : styles.success}>
+                    {successMessage}
+                </p>
+            )}
             <form onSubmit={handleSubmit} style={styles.form}>
                 <div style={styles.inputGroup}>
                     <label htmlFor="accountNumber" style={styles.label}>
@@ -240,6 +274,11 @@ const styles = {
     },
     success: {
         color: "green",
+        marginBottom: "15px",
+    },
+    onHoldMessage: {
+        color: "red",
+        fontWeight: "bold",
         marginBottom: "15px",
     },
 };

@@ -23,9 +23,8 @@ public class TransactionController {
     @GetMapping
     public List<Transaction> getTransactionsByFilters(
             @Validated @RequestParam String accountNumber,
-            @Validated @RequestParam(required = false) String transactionType,
-            @Validated @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate createdAt) {
-        return transactionService.getTransactionsByFilters(accountNumber, transactionType, createdAt);
+            @Validated @RequestParam(required = false) String transactionType){
+        return transactionService.getTransactionsByFilters(accountNumber, transactionType);
     }
 
 
