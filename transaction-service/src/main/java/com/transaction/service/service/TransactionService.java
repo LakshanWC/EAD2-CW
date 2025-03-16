@@ -18,17 +18,17 @@ public class TransactionService {
     @Autowired
     private TransactionRepository transactionRepository;
 
-    public List<Transaction> getAllTransactionsByAccountNumberAndType(String accountNumber, String transactionType, LocalDate createdAt) {
-        return transactionRepository.getAllTransactionsByAccountNumberAndType(accountNumber,transactionType,createdAt);
+    public List<Transaction> getTransactionsByFilters(String accountNumber, String transactionType, LocalDate createdAt) {
+        return transactionRepository.getTransactionsByFilters(accountNumber,transactionType,createdAt);
     }
 
     public Transaction saveTransaction(Transaction transaction) {
         return transactionRepository.save(transaction);
     }
 
-    public String softDeleteTransactionById(int id,int isActive) {
+    public String hideTransactionById(int id,int isActive) {
         boolean isExisting = transactionRepository.existsById(id);
-        if (isExisting) {transactionRepository.softDeleteTransactionById(id,isActive);
+        if (isExisting) {transactionRepository.hideTransactionById(id,isActive);
             return "Transaction with id " + id + " was soft deleted";}
         return "Transaction with id " + id + " was not found";
     }
@@ -45,9 +45,15 @@ public class TransactionService {
        return "Transaction Status with id " + id + " was not found";
     }
 
-    public String resetSoftDeletedTransactions() {
-        int affectedRows = transactionRepository.resetSoftDeletedTransactions();
-        if(affectedRows >= 1) {return "Successfully reset soft deleted transactions";}
-        return "No soft deleted transaction found";
+    public String resetHiddenTransactions(String accountNumber,boolean resetHidden) {
+        if (resetHidden) {
+            int rows = transactionRepository.resetHiddenTransactions(accountNumber);
+            if (rows == 1) {
+                return rows+" Transactions are now visible";
+            } else if (rows == 0) {
+                return "No Trasnactions are hidden";
+            }
+        }
+        throw new IllegalArgumentException("Invalid request: resetHidden must be true");
     }
 }

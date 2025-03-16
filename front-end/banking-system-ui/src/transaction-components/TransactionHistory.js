@@ -1,15 +1,17 @@
 import React, {useState, useEffect} from "react";
 import {useNavigate} from "react-router-dom";
+
 import axios from "axios";
 
 const TransactionHistory = () => {
     const navigate = useNavigate();
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [accountNumber, setAccountNumber] = useState("ACCT1234567890123456"); // Default account number
+    const [data, setData] = useState([]); // Initially empty
+    const [loading, setLoading] = useState(false); // Initially not loading
+    const [error, setError] = useState(null); // Initially no error
+    const [accountNumber, setAccountNumber] = useState(""); // Initially empty
     const [transactionType, setTransactionType] = useState(""); // Filter by transaction type
     const [createdAt, setCreatedAt] = useState(""); // Filter by date
+    const [isFormSubmitted, setIsFormSubmitted] = useState(false); // Track if form is submitted
 
     const fetchData = () => {
         setLoading(true);
@@ -37,13 +39,14 @@ const TransactionHistory = () => {
             });
     };
 
-    useEffect(() => {
-        fetchData();
-    }, [accountNumber, transactionType, createdAt]); // Fetch data when filters change
-
     const handleSubmit = (e) => {
         e.preventDefault(); // Prevent form submission from reloading the page
-        fetchData(); // Fetch data with the new filters
+        if (!accountNumber) {
+            setError("Please enter an account number.");
+            return;
+        }
+        setIsFormSubmitted(true); // Mark form as submitted
+        fetchData(); // Fetch data only when the "Apply Filters" button is pressed
     };
 
     const handleHome = () => {
@@ -60,6 +63,56 @@ const TransactionHistory = () => {
 
     if (error) {
         return <div>Error: {error}</div>;
+    }
+
+    // If the form hasn't been submitted yet, show the input form
+    if (!isFormSubmitted) {
+        return (
+            <div>
+                <h1>Transaction History</h1>
+                <form onSubmit={handleSubmit} style={styles.form}>
+                    <div>
+                        <label>
+                            Account Number:
+                            <input
+                                type="text"
+                                value={accountNumber}
+                                onChange={(e) => setAccountNumber(e.target.value)}
+                                required
+                                style={styles.input}
+                            />
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            Transaction Type:
+                            <select
+                                value={transactionType}
+                                onChange={(e) => setTransactionType(e.target.value)}
+                                style={styles.input}
+                            >
+                                <option value="">All</option>
+                                <option value="WITHDRAW">Withdraw</option>
+                                <option value="TRANSFER">Transfer</option>
+                                <option value="DEPOSIT">Deposit</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            Created At:
+                            <input
+                                type="date"
+                                value={createdAt}
+                                onChange={(e) => setCreatedAt(e.target.value)}
+                                style={styles.input}
+                            />
+                        </label>
+                    </div>
+                    <button type="submit" style={styles.button}>Apply Filters</button>
+                </form>
+            </div>
+        );
     }
 
     // Filter the transactions into categories (use uppercase for transactionType)
