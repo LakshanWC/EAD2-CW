@@ -7,10 +7,10 @@ const TransactionOverview = () => {
             {/* <h1>Transaction Overview</h1>*/}
             <ul style={styles.list}>
                 <li>
-                    <Link to="/transaction/withdrawals" style={styles.link}>Withdraw</Link>
+                    <Link to="/transaction/withdraw" style={styles.link}>Withdraw</Link>
                 </li>
                 <li>
-                    <Link to="/transaction/deposits" style={styles.link}>Deposit</Link>
+                    <Link to="/transaction/deposit" style={styles.link}>Deposit</Link>
                 </li>
                 <li>
                     <Link to="/transaction/transfer" style={styles.link}>Transfer</Link>

@@ -15,6 +15,7 @@ import LoanApplicationForm from "./components/loanService-components/LoanApplica
 import LoanCalculator from "./components/loanService-components/LoanCalculator";
 import LoanStatus from "./components/loanService-components/LoanStatus";
 import LoanApplicationDelete from "./components/loanService-components/LoanApplicationDelete";
+import WithDrawAndDeposit from "./transaction-components/WithDrawAndDeposit";
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login status
@@ -123,6 +124,8 @@ function App() {
                                         <Route path="/" element={<TransactionOverview />} />
                                         <Route path="transfer" element={<Transfer />} />
                                         <Route path="history" element={<TransactionHistory />} />
+                                        <Route path={"withdraw"} element={<WithDrawAndDeposit/>}/>
+                                        <Route path={"deposit"} element={<WithDrawAndDeposit/>}/>
                                     </Routes>
                                 </>
                             ) : (

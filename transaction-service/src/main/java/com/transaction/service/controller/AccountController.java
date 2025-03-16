@@ -23,8 +23,7 @@ public class AccountController {
                                       @RequestParam(value = "amount") float amount) {
         return accountService.isBalanceSufficient(accountNumber,amount);
     }
-
-
+    
     //http://localhost:8081/transaction-service/accounts/ACCT1234567890123456?amount=550&addAmount=true
 
     @PatchMapping(path = {"/{accountNumber}"},params = {"amount","addAmount"})
