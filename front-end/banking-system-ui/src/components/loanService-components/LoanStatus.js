@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios"; // For making HTTP requests
-
+//update loan status
 const UpdateStatus = () => {
     // State for loan application ID
     const [loanId, setLoanId] = useState("");
