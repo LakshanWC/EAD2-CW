@@ -1,7 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom"; // Assuming you are using React Router for navigation
+import { Link } from "react-router-dom";
 
-const LoanOverview = () => {
+const LoanOverview = ({ currentUser }) => {
     return (
         <div>
             <h1>Loan Service</h1>
@@ -15,9 +15,12 @@ const LoanOverview = () => {
                 <li>
                     <Link to="/loan-service/delete" style={styles.link}>Delete Loan Application</Link>
                 </li>
-                <li>
-                    <Link to="/loan-service/status" style={styles.link}>Loan Status</Link>
-                </li>
+                {/* Only show Loan Status link for ADMIN users */}
+                {currentUser && currentUser.role === "ADMIN" && (
+                    <li>
+                        <Link to="/loan-service/status" style={styles.link}>Loan Status</Link>
+                    </li>
+                )}
             </ul>
         </div>
     );

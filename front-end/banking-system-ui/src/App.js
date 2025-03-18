@@ -98,21 +98,24 @@ function App() {
                     />
 
                     {/* Loan Microservice */}
-                    <Route path="/loan-service/*" element={
-                        isLoggedIn ? (
-                            <>
-                                <Routes>
-                                    <Route path="/" element={<LoanOverview />} /> {/* Default route */}
-                                    <Route path="apply" element={<LoanApplicationForm />} /> {/* Apply route */}
-                                    <Route path="calculator" element={<LoanCalculator />} /> {/* Calculator route */}
-                                    <Route path="status" element={<LoanStatus />} /> {/* Status route */}
-                                    <Route path="delete" element={<LoanApplicationDelete />} /> {/* Delete route */}
-                                </Routes>
-                            </>
-                        ) : (
-                            <Navigate to="/" /> // Redirect to Login if not logged in
-                        )
-                    } />
+                    <Route
+                        path="/loan-service/*"
+                        element={
+                            isLoggedIn ? (
+                                <>
+                                    <Routes>
+                                        <Route path="/" element={<LoanOverview currentUser={currentUser} />} />
+                                        <Route path="apply" element={<LoanApplicationForm currentUser={currentUser} />} />
+                                        <Route path="calculator" element={<LoanCalculator currentUser={currentUser} />} />
+                                        <Route path="status" element={<LoanStatus currentUser={currentUser} />} />
+                                        <Route path="delete" element={<LoanApplicationDelete currentUser={currentUser} />} />
+                                    </Routes>
+                                </>
+                            ) : (
+                                <Navigate to="/" />
+                            )
+                        }
+                    />
 
                     {/* Transaction Microservice */}
                     <Route
