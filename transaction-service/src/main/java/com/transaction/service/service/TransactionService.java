@@ -56,4 +56,8 @@ public class TransactionService {
         }
         throw new IllegalArgumentException("Invalid request: resetHidden must be true");
     }
+
+    public List<Transaction> getAllTransactions() {
+        return transactionRepository.findAll();
+    }
 }

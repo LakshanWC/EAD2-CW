@@ -57,4 +57,9 @@ public class TransactionController {
     public String resetHiddenTransactions(@PathVariable String accountNumber,@RequestParam boolean resetHidden) {
         return transactionService.resetHiddenTransactions(accountNumber,resetHidden);
     }
+
+    @GetMapping(path = "/all")
+    public List<Transaction> getAllTransactions() {
+        return transactionService.getAllTransactions();
+    }
 }
