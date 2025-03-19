@@ -41,6 +41,10 @@ function Login({ onLogin }) {
         }
     };
 
+    const handleRegisterClick = () => {
+        navigate("/register"); // Navigate to the register page
+    };
+
     return (
         <div className="login-container">
             <h1 className="login-title">Welcome to ABC Bank</h1>
@@ -81,7 +85,7 @@ function Login({ onLogin }) {
                             />
                         </div>
                         <br />
-                        <button type="button">Register</button>{" "}
+                        <button type="button" onClick={handleRegisterClick}>Register</button>{" "}
                         <button type="submit">Login</button>
                     </form>
                 </div>

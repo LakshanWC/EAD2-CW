@@ -27,13 +27,11 @@ public class TransactionController {
         return transactionService.getTransactionsByFilters(accountNumber, transactionType);
     }
 
-
     //save the hole recode
     @PostMapping
     public Transaction saveTransaction(@Validated @RequestBody Transaction transaction) {
         return transactionService.saveTransaction(transaction);
     }
-
 
     //mark as hidden in the column in  the given recode by the id
     @PatchMapping(path = "{id}")

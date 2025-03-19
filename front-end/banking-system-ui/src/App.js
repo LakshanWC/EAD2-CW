@@ -5,9 +5,9 @@ import Home from "./Home"; // Import the Home component
 import AccountList from "./components/AccountList"; // Import the AccountList component
 import AccountNavbar from "./components/Navbar";
 
-import TransactionOverview from "./transaction-components/TransactionOverview";
-import TransactionHistory from "./transaction-components/TransactionHistory";
-import Transfer from "./transaction-components/Transfer";
+import TransactionOverview from "./components/transaction-components/TransactionOverview";
+import TransactionHistory from "./components/transaction-components/TransactionHistory";
+import Transfer from "./components/transaction-components/Transfer";
 
 // Import Loan Service Components
 import LoanOverview from "./components/loanService-components/LoanOverview";
@@ -15,8 +15,13 @@ import LoanApplicationForm from "./components/loanService-components/LoanApplica
 import LoanCalculator from "./components/loanService-components/LoanCalculator";
 import LoanStatus from "./components/loanService-components/LoanStatus";
 import LoanApplicationDelete from "./components/loanService-components/LoanApplicationDelete";
-import WithDrawAndDeposit from "./transaction-components/WithDrawAndDeposit";
-import AdminView from "./transaction-components/AdminView";
+import WithDrawAndDeposit from "./components/transaction-components/WithDrawAndDeposit";
+import AdminView from "./components/transaction-components/AdminView";
+
+//user service import
+import Register from "./components/user-components/Register";
+import UserOverView from "./components/user-components/UserOverView";
+import UserUpdate from "./components/user-components/UserUpdate";
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login status
@@ -46,6 +51,9 @@ function App() {
                         <Link to="/loan-service">
                             <button>Loan Service</button>
                         </Link>
+                        <Link to={"/user-service"}>
+                            <button>User Service</button>
+                        </Link>
                     </div>
                 )}
 
@@ -57,11 +65,17 @@ function App() {
                         element={
                             isLoggedIn ? (
                                 <Navigate to="/home" /> // Redirect to Home if already logged in
+
+
                             ) : (
                                 <Login onLogin={handleLogin} /> // Show Login page if not logged in
                             )
                         }
                     />
+
+                    <Route path="/register" element={<Register />} />
+
+
 
                     {/* Home Microservice */}
                     <Route
@@ -97,6 +111,22 @@ function App() {
                         }
                     />
 
+                    {/*user microservice*/}
+                    <Route path="/user-service/*"
+                        element={
+                            isLoggedIn?(
+                                <>
+                                    <Routes>
+                                        <Route path={"/"} element={<UserOverView currentUser={currentUser}/>}/>
+                                        <Route path={"/update"} element={<UserUpdate/>}/>
+                                    </Routes>
+                                </>
+                            ):(
+                           <Navigate to="/"/>
+                            )
+                    }
+                    />
+
                     {/* Loan Microservice */}
                     <Route
                         path="/loan-service/*"
@@ -126,7 +156,7 @@ function App() {
                                     <h1>Transaction Microservice</h1>
                                     <TransactionOverview currentUser={currentUser}/>
                                     <Routes>
-                                        <Route path="/" element={<TransactionOverview />} />
+                                        <Route path="/" element={<TransactionOverview currentUser={currentUser}/> } />
                                         <Route path="transfer" element={<Transfer />} />
                                         <Route path="history" element={<TransactionHistory />} />
                                         <Route path={"withdraw"} element={<WithDrawAndDeposit/>}/>
