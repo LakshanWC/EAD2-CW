@@ -31,7 +31,7 @@ class Register extends Component {
         try {
             const response = await fetch(`http://localhost:8086/users?userName=${username}`);
             const data = await response.json();
-            return !data;
+            return data === null; // If API returns null, the username is available
         } catch (error) {
             console.error('Error checking username availability:', error);
             return true;
@@ -40,7 +40,7 @@ class Register extends Component {
 
     handleSubmit = async (e) => {
         e.preventDefault();
-        const { username, password, fullName, email, usernameAvailable } = this.state;
+        const { username, password, fullName, email } = this.state;
 
         if (!username || !password || !fullName || !email) {
             this.setState({ errorMessage: 'All fields are required' });
@@ -62,26 +62,23 @@ class Register extends Component {
         this.setState({ errorMessage: '', successMessage: '' });
 
         const registrationData = {
-            username: username,
-            password: password,
-            fullName: fullName,
-            email: email,
+            username,
+            password,
+            fullName,
+            email,
             role: "user"
         };
 
         try {
             const response = await fetch('http://localhost:8086/users/register', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(registrationData)
             });
 
             if (response.ok) {
                 const data = await response.json();
                 console.log('Registration successful:', data);
-
                 this.setState({
                     successMessage: 'Registration successful! You can now log in.',
                     username: '',
@@ -103,142 +100,57 @@ class Register extends Component {
 
     render() {
         const { username, password, fullName, email, errorMessage, successMessage, usernameAvailable } = this.state;
-
-        const containerStyle = {
-            width: '100%',
-            maxWidth: '400px',
-            margin: '0 auto',
-            padding: '20px',
-            backgroundColor: '#f9f9f9',
-            borderRadius: '8px',
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)'
-        };
-
-        const formBoxStyle = {
-            padding: '20px',
-            backgroundColor: 'white',
-            borderRadius: '8px',
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-        };
-
-        const formGroupStyle = {
-            marginBottom: '15px'
-        };
-
-        const inputStyle = {
-            width: '100%',
-            padding: '8px',
-            marginTop: '5px',
-            borderRadius: '4px',
-            border: '1px solid #ccc'
-        };
-
-        const buttonStyle = {
-            width: '100%',
-            padding: '10px',
-            backgroundColor: '#4CAF50',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontSize: '16px',
-            marginBottom: '10px' // Added margin to create space between buttons
-        };
-
-        const loginButtonStyle = {
-            width: '100%',
-            padding: '10px',
-            backgroundColor: '#007BFF', // Different color for the Login button
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontSize: '16px',
-            marginTop: '10px' // Added margin to create space above the Login button
-        };
-
-        const errorMessageStyle = {
-            color: 'red',
-            fontSize: '14px',
-            marginBottom: '15px'
-        };
-
-        const successMessageStyle = {
-            color: 'green',
-            fontSize: '14px',
-            marginBottom: '15px'
-        };
-
         return (
-            <div style={containerStyle}>
-                <h2>User Registration</h2>
-                {errorMessage && <div style={errorMessageStyle}>{errorMessage}</div>}
-                {successMessage && <div style={successMessageStyle}>{successMessage}</div>}
-                <div style={formBoxStyle}>
-                    <form onSubmit={this.handleSubmit}>
-                        <div style={formGroupStyle}>
-                            <label htmlFor="username">Username</label>
-                            <input
-                                type="text"
-                                id="username"
-                                name="username"
-                                value={username}
-                                onChange={this.handleChange}
-                                style={inputStyle}
-                            />
-                            {!usernameAvailable && (
-                                <div style={{ color: 'red', fontSize: '12px' }}>
-                                    Username is already taken
-                                </div>
-                            )}
-                        </div>
+            <div style={styles.container}>
+                <h2 style={styles.heading}>User Registration</h2>
+                {errorMessage && <div style={styles.errorMessage}>{errorMessage}</div>}
+                {successMessage && <div style={styles.successMessage}>{successMessage}</div>}
+                <form onSubmit={this.handleSubmit} style={styles.form}>
+                    <label style={styles.label}>Username</label>
+                    <input
+                        type="text"
+                        name="username"
+                        value={username}
+                        onChange={this.handleChange}
+                        style={styles.input}
+                    />
+                    {!usernameAvailable && <div style={styles.usernameError}>Username is already taken</div>}
 
-                        <div style={formGroupStyle}>
-                            <label htmlFor="password">Password</label>
-                            <input
-                                type="password"
-                                id="password"
-                                name="password"
-                                value={password}
-                                onChange={this.handleChange}
-                                style={inputStyle}
-                            />
-                        </div>
+                    <label style={styles.label}>Password</label>
+                    <input
+                        type="password"
+                        name="password"
+                        value={password}
+                        onChange={this.handleChange}
+                        style={styles.input}
+                    />
 
-                        <div style={formGroupStyle}>
-                            <label htmlFor="fullName">Full Name</label>
-                            <input
-                                type="text"
-                                id="fullName"
-                                name="fullName"
-                                value={fullName}
-                                onChange={this.handleChange}
-                                style={inputStyle}
-                            />
-                        </div>
+                    <label style={styles.label}>Full Name</label>
+                    <input
+                        type="text"
+                        name="fullName"
+                        value={fullName}
+                        onChange={this.handleChange}
+                        style={styles.input}
+                    />
 
-                        <div style={formGroupStyle}>
-                            <label htmlFor="email">Email</label>
-                            <input
-                                type="email"
-                                id="email"
-                                name="email"
-                                value={email}
-                                onChange={this.handleChange}
-                                style={inputStyle}
-                            />
-                        </div>
-
-                        <button type="submit" style={buttonStyle}>Register</button>
-                        <button
-                            type="button"
-                            onClick={this.props.handleLoginClick}
-                            style={loginButtonStyle}
-                        >
-                            Login
-                        </button>
-                    </form>
-                </div>
+                    <label style={styles.label}>Email</label>
+                    <input
+                        type="email"
+                        name="email"
+                        value={email}
+                        onChange={this.handleChange}
+                        style={styles.input}
+                    />
+                    <button type="submit" style={styles.button}>Register</button>
+                    <button
+                        type="button"
+                        onClick={this.props.handleLoginClick}
+                        style={{ ...styles.button, backgroundColor: '#007BFF', marginTop: '10px' }}
+                    >
+                        Login
+                    </button>
+                </form>
             </div>
         );
     }
@@ -246,12 +158,68 @@ class Register extends Component {
 
 function RegisterWithNavigation(props) {
     const navigate = useNavigate();
-
-    const handleLoginClick = () => {
-        navigate('/');
-    };
-
+    const handleLoginClick = () => navigate('/');
     return <Register {...props} handleLoginClick={handleLoginClick} />;
 }
+
+const styles = {
+    container: {
+        maxWidth: '400px',
+        margin: '0 auto',
+        padding: '20px',
+        borderRadius: '8px',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+        backgroundColor: '#fff'
+    },
+    heading: {
+        textAlign: 'center',
+        fontSize: '24px',
+        marginBottom: '20px'
+    },
+    form: {
+        display: 'flex',
+        flexDirection: 'column'
+    },
+    label: {
+        fontSize: '14px',
+        marginBottom: '6px',
+        color: '#333'
+    },
+    input: {
+        padding: '10px',
+        marginBottom: '15px',
+        borderRadius: '5px',
+        border: '1px solid #ccc',
+        fontSize: '14px'
+    },
+    button: {
+        padding: '10px 20px',
+        borderRadius: '5px',
+        border: 'none',
+        fontSize: '14px',
+        color: '#fff',
+        backgroundColor: '#28a745',
+        cursor: 'pointer',
+        transition: 'background-color 0.3s'
+    },
+    usernameError: {
+        color: 'red',
+        fontSize: '12px',
+        marginTop: '-10px',
+        marginBottom: '10px'
+    },
+    errorMessage: {
+        color: 'red',
+        fontSize: '14px',
+        marginBottom: '15px',
+        textAlign: 'center'
+    },
+    successMessage: {
+        color: 'green',
+        fontSize: '14px',
+        marginBottom: '15px',
+        textAlign: 'center'
+    }
+};
 
 export default RegisterWithNavigation;

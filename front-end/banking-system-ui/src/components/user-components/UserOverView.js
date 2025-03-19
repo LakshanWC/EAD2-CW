@@ -29,16 +29,16 @@ const UserOverview = ({ currentUser }) => {
                 {currentUser && currentUser.role === "ADMIN" && (
                     <>
                         <li>
-                            <Link to="/user/update" style={styles.link}>Update User</Link>
+                            <Link to="/user-service/update" style={styles.link}>Update User</Link>
                         </li>
                         <li>
                             <Link to="/user/select" style={styles.link}>Select User</Link>
                         </li>
                         <li>
-                            <Link to="/user/delete" style={styles.link}>Delete User</Link>
+                            <Link to="/user-service/delete" style={styles.link}>Delete User</Link>
                         </li>
                         <li>
-                            <Link to="/user/all" style={styles.link}>All Users</Link>
+                            <Link to="/user-service/all" style={styles.link}>All Users</Link>
                         </li>
                     </>
                 )}

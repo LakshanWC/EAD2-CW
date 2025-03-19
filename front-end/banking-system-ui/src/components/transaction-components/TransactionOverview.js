@@ -25,11 +25,13 @@ const TransactionOverview = ({ currentUser }) => {
                         <li>
                             <Link to="/transaction/transfer" style={styles.link}>Transfer</Link>
                         </li>
-                        <li>
-                            <Link to="/transaction/history" style={styles.link}>History</Link>
-                        </li>
                     </>
                 )}
+
+                {/* Show history link for all users (including admins) */}
+                <li>
+                    <Link to="/transaction/history" style={styles.link}>History</Link>
+                </li>
 
                 {/* Show admin-only links for admin users */}
                 {currentUser && currentUser.role === "ADMIN" && (
@@ -65,4 +67,4 @@ const styles = {
     }
 };
 
-export default TransactionOverview;
+export default React.memo(TransactionOverview);

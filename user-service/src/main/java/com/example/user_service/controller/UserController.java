@@ -40,6 +40,8 @@ public class UserController {
     }
 
 
+
     @GetMapping(params = {"userName"})
-    public boolean userExists(@RequestParam String userName) {return userService.userExists(userName);}
+    public User userExists(@RequestParam String userName) {return userService.userExists(userName);}
+
 }

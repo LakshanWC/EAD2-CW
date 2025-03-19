@@ -22,6 +22,8 @@ import AdminView from "./components/transaction-components/AdminView";
 import Register from "./components/user-components/Register";
 import UserOverView from "./components/user-components/UserOverView";
 import UserUpdate from "./components/user-components/UserUpdate";
+import UserDelete from "./components/user-components/UserDelete";
+import AllUsers from "./components/user-components/AllUsers";
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login status
@@ -119,6 +121,8 @@ function App() {
                                     <Routes>
                                         <Route path={"/"} element={<UserOverView currentUser={currentUser}/>}/>
                                         <Route path={"/update"} element={<UserUpdate/>}/>
+                                        <Route path={"/delete"} element={<UserDelete/>}/>
+                                        <Route path={"/all"} element={<AllUsers/>}/>
                                     </Routes>
                                 </>
                             ):(
@@ -154,7 +158,7 @@ function App() {
                             isLoggedIn ? (
                                 <>
                                     <h1>Transaction Microservice</h1>
-                                    <TransactionOverview currentUser={currentUser}/>
+                                    {/* <TransactionOverview currentUser={currentUser}/>*/}
                                     <Routes>
                                         <Route path="/" element={<TransactionOverview currentUser={currentUser}/> } />
                                         <Route path="transfer" element={<Transfer />} />
