@@ -41,7 +41,11 @@ public class UserController {
 
 
 
-    @GetMapping(params = {"userName"})
-    public User userExists(@RequestParam String userName) {return userService.userExists(userName);}
+    @GetMapping("/check/{userName}")
+    public User userExists(@PathVariable String userName) {return userService.userExists(userName);}
 
+
+    @GetMapping(path = "/validate/",params = {"userName","password"})
+    public String  validateCredentials(@RequestParam String userName,@RequestParam String password)
+    {return userService.validateCredentials(userName, password);}
 }

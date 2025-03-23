@@ -10,18 +10,19 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false ,name = "username")
     private String username;
 
-    @Column(nullable = false)
+    @Column(nullable = false ,name = "password")
     private String password;
 
+    @Column(name = "full_name")
     private String fullName;
 
-    @Column(unique = true)
+    @Column(unique = true,name = "email")
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = false,name = "role")
     private String role;
 
     // Getters and Setters

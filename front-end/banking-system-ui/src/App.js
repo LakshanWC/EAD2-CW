@@ -24,6 +24,7 @@ import UserOverView from "./components/user-components/UserOverView";
 import UserUpdate from "./components/user-components/UserUpdate";
 import UserDelete from "./components/user-components/UserDelete";
 import AllUsers from "./components/user-components/AllUsers";
+import Profile from "./components/user-components/Profile";
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login status
@@ -86,7 +87,7 @@ function App() {
                             isLoggedIn ? (
                                 <>
                                     <AccountNavbar currentUser={currentUser} />
-                                    <Home />
+                                    <Home user={currentUser} />
                                 </>
                             ) : (
                                 <Navigate to="/" /> // Redirect to Login if not logged in
@@ -123,6 +124,7 @@ function App() {
                                         <Route path={"/update"} element={<UserUpdate/>}/>
                                         <Route path={"/delete"} element={<UserDelete/>}/>
                                         <Route path={"/all"} element={<AllUsers/>}/>
+                                        <Route path={"/view"} element={<Profile currentUser={currentUser}/>}/>
                                     </Routes>
                                 </>
                             ):(

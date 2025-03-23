@@ -1,12 +1,17 @@
+// src/Home.js
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
 class Home extends React.Component {
     render() {
-        return <div>
-            <h1>Welcome to abc bank   hello </h1>
-            is it fixed
-        </div>; // Empty div to render nothing
+        const { user } = this.props; // Destructure the user prop
+
+        return (
+            <div>
+                <h1>Welcome to ABC Bank</h1>
+                {user && <p>Hello, {user.username}!</p>} {/* Display the username if user is logged in */}
+            </div>
+        );
     }
 }
 

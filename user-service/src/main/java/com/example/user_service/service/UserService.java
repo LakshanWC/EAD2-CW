@@ -37,4 +37,9 @@ public class UserService {
         if (user.isPresent()) {return user.get();}
         return null;
     }
+
+    public String validateCredentials(String userName, String password) {
+        if(userRepository.validateCredentials(userName,password)==1){return "Success";}
+        return "Wrong Credentials";
+    }
 }

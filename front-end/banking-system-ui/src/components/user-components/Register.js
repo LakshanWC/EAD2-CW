@@ -29,7 +29,7 @@ class Register extends Component {
         if (!username) return true;
 
         try {
-            const response = await fetch(`http://localhost:8086/users?userName=${username}`);
+            const response = await fetch(`http://localhost:8086/users/check/${username}`);
             const data = await response.json();
             return data === null; // If API returns null, the username is available
         } catch (error) {

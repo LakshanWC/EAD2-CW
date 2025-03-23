@@ -29,7 +29,7 @@ const UserUpdate = () => {
     const handleSearchSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:8086/users?userName=${searchUsername}`);
+            const response = await fetch(`http://localhost:8086/users/check/${searchUsername}`);
             const data = await response.json();
 
             console.log('Received Data:', data);
@@ -69,7 +69,7 @@ const UserUpdate = () => {
 
             try {
                 const response = await fetch('http://localhost:8086/users/update', {
-                    method: 'POST',
+                    method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
                     },
@@ -78,6 +78,17 @@ const UserUpdate = () => {
 
                 if (response.ok) {
                     setUpdateStatus('success');
+                    // Reset the form and state after successful update
+                    setSearchUsername('');
+                    setUserData({
+                        id: null,
+                        username: '',
+                        password: '',
+                        name: '',
+                        email: '',
+                        role: '',
+                    });
+                    setUsernameExists(null);
                 } else {
                     setUpdateStatus('error');
                 }
