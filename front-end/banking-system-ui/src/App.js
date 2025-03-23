@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes, Link, Navigate } from "react-router-dom";
 import axios from "axios";
@@ -9,6 +10,12 @@ import CreateAccount from "./components/CreateAccount";
 import UpdateAccount from "./components/UpdateAccount";
 import DeleteAccount from "./components/DeleteAccount";
 import "./App.css";
+=======
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Login from "./Login";  // Import the Login component
+import Home from "./Home";    // Import the Home component
+import AccountList from "./components/AccountList";
+>>>>>>> Stashed changes
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -33,6 +40,7 @@ function App() {
 
     return (
         <Router>
+<<<<<<< Updated upstream
             <div>
                 {isLoggedIn && (
                     <div className="microservice-buttons">
@@ -131,6 +139,13 @@ function App() {
                     />
                 </Routes>
             </div>
+=======
+            <Routes>
+                <Route path="/" element={<Login />} />
+                <Route path="/home" element={<Home />} />
+                <Route path="/components" element={<AccountList />}/>
+            </Routes>
+>>>>>>> Stashed changes
         </Router>
     );
 }
