@@ -12,6 +12,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/accounts")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AccountController {
 
     @Autowired
@@ -48,7 +49,6 @@ public class AccountController {
         accountService.updateStatus(accountNumber, status);
         return ResponseEntity.ok("Status updated successfully");
     }
-
 
 
     // Get all accounts

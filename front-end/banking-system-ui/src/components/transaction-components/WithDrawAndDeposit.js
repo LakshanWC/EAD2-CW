@@ -123,6 +123,17 @@ function WithdrawDepositPage() {
                 const transactionType = isWithdraw ? "WITHDRAW" : "DEPOSIT";
                 await saveTransaction(accountNumber, transactionType, amount, status);
 
+                // Call the additional endpoint for deposit or withdrawal
+                if (isWithdraw) {
+                    await axios.get(
+                        `http://localhost:8080/accounts/upBalance?accountNumber=${accountNumber}&amount=${amount}&operation=withdrawal`
+                    );
+                } else {
+                    await axios.get(
+                        `http://localhost:8080/accounts/upBalance?accountNumber=${accountNumber}&amount=${amount}&operation=deposit`
+                    );
+                }
+
                 // Clear the input fields
                 setAccountNumber("");
                 setAmount("");
@@ -158,6 +169,17 @@ function WithdrawDepositPage() {
                 const transactionType = isWithdraw ? "WITHDRAW" : "DEPOSIT";
                 await saveTransaction(accountNumber, transactionType, amount, status);
 
+                // Call the additional endpoint for deposit or withdrawal
+                if (isWithdraw) {
+                    await axios.post(
+                        `http://localhost:8080/account-service/accounts/upBalance?accountNumber=${accountNumber}&amount=${amount}&operation=withdrawal`
+                    );
+                } else {
+                    await axios.post(
+                        `http://localhost:8080/account-service/accounts/upBalance?accountNumber=${accountNumber}&amount=${amount}&operation=deposit`
+                    );
+                }
+
                 // Clear the input fields
                 setAccountNumber("");
                 setAmount("");
@@ -172,6 +194,7 @@ function WithdrawDepositPage() {
             setError("An error occurred during the transaction.");
         }
     };
+
 
     return (
         <div style={styles.container}>

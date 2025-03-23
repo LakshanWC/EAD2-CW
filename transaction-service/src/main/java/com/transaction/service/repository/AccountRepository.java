@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Optional;
+
 @Repository
 public interface AccountRepository extends JpaRepository<Account, Integer> {
 
@@ -23,4 +25,6 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     @Modifying
     @Query("update Account a set a.balance = a.balance - ?2 where a.accountNumber = ?1")
     public int updateBalanceSubtract(String accountNumber, float balance);
+
+    Optional<Account> findByAccountNumber(String accountNumber);
 }

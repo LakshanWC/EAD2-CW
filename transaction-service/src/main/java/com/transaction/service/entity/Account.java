@@ -2,6 +2,8 @@ package com.transaction.service.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "account_info")
 public class Account {
@@ -22,6 +24,9 @@ public class Account {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "last_updated_at")
+    private LocalDateTime lastUpdatedAt;
+
     public int getId() {return id;}
 
     public void setId(int id) {this.id = id;}
@@ -41,4 +46,8 @@ public class Account {
     public String getStatus() {return status;}
 
     public void setStatus(String status) {this.status = status;}
+
+    public LocalDateTime getLastUpdatedAt() {return lastUpdatedAt;}
+
+    public void setLastUpdatedAt(LocalDateTime lastUpdatedAt) {this.lastUpdatedAt = lastUpdatedAt;}
 }

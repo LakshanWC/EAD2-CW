@@ -130,7 +130,19 @@ function TransferPage() {
 
             // Only update balances if the transaction is not on hold
             if (status !== "ON HOLD") {
-                // Subtract the amount from the source account
+                // Deduct the amount from the source account (new endpoint)
+                const withdrawResponse = await fetch(
+                    `http://localhost:8080/account-service/accounts/upBalance?accountNumber=${sourceAccount}&amount=${amount}&operation=withdrawal`,
+                    {
+                        method: "POST",
+                    }
+                );
+
+                if (!withdrawResponse.ok) {
+                    throw new Error("Failed to deduct amount from source account");
+                }
+
+                // Subtract the amount from the source account (existing endpoint)
                 const subtractResponse = await fetch(
                     `http://localhost:8085/transaction-service/accounts/${sourceAccount}?amount=${amount}&addAmount=false`,
                     {
@@ -142,7 +154,19 @@ function TransferPage() {
                     throw new Error("Failed to subtract amount from source account");
                 }
 
-                // Add the amount to the destination account
+                // Add the amount to the destination account (new endpoint)
+                const depositResponse = await fetch(
+                    `http://localhost:8080/account-service/accounts/upBalance?accountNumber=${destinationAccount}&amount=${amount}&operation=deposit`,
+                    {
+                        method: "POST",
+                    }
+                );
+
+                if (!depositResponse.ok) {
+                    throw new Error("Failed to add amount to destination account");
+                }
+
+                // Add the amount to the destination account (existing endpoint)
                 const addResponse = await fetch(
                     `http://localhost:8085/transaction-service/accounts/${destinationAccount}?amount=${amount}&addAmount=true`,
                     {
@@ -178,6 +202,7 @@ function TransferPage() {
             setError("Failed to process the transaction. Please try again.");
         }
     };
+
 
 
     return (
