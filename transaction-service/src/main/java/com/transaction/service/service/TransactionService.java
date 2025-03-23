@@ -3,6 +3,7 @@ package com.transaction.service.service;
 import com.transaction.service.controller.TransactionController;
 import com.transaction.service.entity.Transaction;
 import com.transaction.service.repository.TransactionRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +40,7 @@ public class TransactionService {
         return null;
     }
 
+    @Transactional
     public String updateTransactionStatusById(int id,String status) {
        int affectedRows = transactionRepository.updateTransactionStatusById(id,status);
        if(affectedRows == 1) {return "Transaction Status with id " + id + " was updated";}

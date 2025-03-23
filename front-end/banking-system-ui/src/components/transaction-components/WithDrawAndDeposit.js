@@ -41,13 +41,19 @@ function WithdrawDepositPage() {
     // Function to save the transaction
     const saveTransaction = async (accountNumber, transactionType, amount, status) => {
         try {
+            // Get the current date and time
+            const now = new Date();
+
+            // Format the date and time as a string (e.g., "2023-10-05T14:30:00")
+            const formattedDateTime = now.toISOString(); // This includes both date and time
+
             const transactionPayload = {
                 accountNumber: accountNumber,
                 destinationAccountNumber: null, // No destination account for withdrawals/deposits
                 transactionType: transactionType.toUpperCase(), // "WITHDRAW" or "DEPOSIT"
                 amount: amount,
                 status: status, // "SUCCESS" or "ON HOLD"
-                createdAt: new Date().toISOString(), // Current date and time
+                createdAt: formattedDateTime, // Include both date and time
                 isActive: 1
             };
 

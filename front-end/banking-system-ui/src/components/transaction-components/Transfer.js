@@ -64,6 +64,7 @@ function TransferPage() {
     };
 
     // Handle form submission
+            <h1 style={styles.title}>Transfer Page</h1>
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(""); // Clear previous errors
@@ -178,10 +179,10 @@ function TransferPage() {
         }
     };
 
+
     return (
         <div style={styles.container}>
-            <h1 style={styles.title}>Transfer Page</h1>
-            <p style={styles.subtitle}>Here you can transfer money between accounts.</p>
+        <p style={styles.subtitle}>Here you can transfer money between accounts.</p>
             {error && <p style={styles.error}>{error}</p>}
             {successMessage && (
                 <p style={transactionStatus === "ON HOLD" ? styles.onHoldMessage : styles.success}>

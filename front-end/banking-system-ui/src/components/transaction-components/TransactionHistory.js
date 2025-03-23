@@ -112,6 +112,14 @@ const TransactionHistory = () => {
     const transfers = data.filter(item => item.transactionType === "TRANSFER");
     const deposits = data.filter(item => item.transactionType === "DEPOSIT");
 
+    // Function to determine row style based on status
+    const getRowStyle = (status) => {
+        if (status === "ON HOLD") {
+            return { backgroundColor: "#ff4d4d" }; // Darker red for ON HOLD
+        }
+        return {};
+    };
+
     return (
         <div>
             <h1>Transaction History</h1>
@@ -163,13 +171,16 @@ const TransactionHistory = () => {
                         <tbody>
                         {withdrawals.map((item, index) => (
                             <tr key={item.transactionId}
-                                style={{ backgroundColor: index % 2 === 0 ? "#f2f2f2" : "white" }}>
+                                style={{
+                                    ...getRowStyle(item.status),
+                                    backgroundColor: index % 2 === 0 ? "#f2f2f2" : "white",
+                                }}>
                                 <td>{item.transactionId}</td>
                                 <td>{item.accountNumber}</td>
                                 <td>{item.transactionType}</td>
                                 <td>{item.amount}</td>
                                 <td>{item.status}</td>
-                                <td>{item.createdAt}</td>
+                                <td>{item.createdAt ? item.createdAt.replace("T", " ") : "N/A"}</td>
                             </tr>
                         ))}
                         </tbody>
@@ -195,14 +206,17 @@ const TransactionHistory = () => {
                         <tbody>
                         {transfers.map((item, index) => (
                             <tr key={item.transactionId}
-                                style={{ backgroundColor: index % 2 === 0 ? "#f2f2f2" : "white" }}>
+                                style={{
+                                    ...getRowStyle(item.status),
+                                    backgroundColor: index % 2 === 0 ? "#f2f2f2" : "white",
+                                }}>
                                 <td>{item.transactionId}</td>
                                 <td>{item.accountNumber}</td>
                                 <td>{item.transactionType}</td>
                                 <td>{item.destinationAccountNumber || "N/A"}</td>
                                 <td>{item.amount}</td>
                                 <td>{item.status}</td>
-                                <td>{item.createdAt}</td>
+                                <td>{item.createdAt ? item.createdAt.replace("T", " ") : "N/A"}</td>
                             </tr>
                         ))}
                         </tbody>
@@ -227,13 +241,16 @@ const TransactionHistory = () => {
                         <tbody>
                         {deposits.map((item, index) => (
                             <tr key={item.transactionId}
-                                style={{ backgroundColor: index % 2 === 0 ? "#f2f2f2" : "white" }}>
+                                style={{
+                                    ...getRowStyle(item.status),
+                                    backgroundColor: index % 2 === 0 ? "#f2f2f2" : "white",
+                                }}>
                                 <td>{item.transactionId}</td>
                                 <td>{item.accountNumber}</td>
                                 <td>{item.transactionType}</td>
                                 <td>{item.amount}</td>
                                 <td>{item.status}</td>
-                                <td>{item.createdAt}</td>
+                                <td>{item.createdAt ? item.createdAt.replace("T", " ") : "N/A"}</td>
                             </tr>
                         ))}
                         </tbody>

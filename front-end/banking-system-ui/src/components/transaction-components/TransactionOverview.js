@@ -39,9 +39,6 @@ const TransactionOverview = ({ currentUser }) => {
                         <li>
                             <Link to="/transaction/admin-view" style={styles.link}>Admin View</Link>
                         </li>
-                        <li>
-                            <Link to="/transaction/admin-edit" style={styles.link}>Admin Edit</Link>
-                        </li>
                     </>
                 )}
             </ul>
