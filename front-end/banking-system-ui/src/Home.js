@@ -81,10 +81,10 @@ class Home extends React.Component {
                             {isLoading ? (
                                 <>
                                     <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                    <span className="ms-2">Refreshing...</span>
+                                    <span className="ms-2">Syncing Transactions...</span>
                                 </>
                             ) : (
-                                "Refresh Account Data"
+                                "Sync Account Data"
                             )}
                         </button>
 
