@@ -26,27 +26,44 @@ import UserDelete from "./components/user-components/UserDelete";
 import AllUsers from "./components/user-components/AllUsers";
 import Profile from "./components/user-components/Profile";
 
-function App() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login status
-    const [currentUser, setCurrentUser] = useState(null); // Track current user
+import axios from "axios";
+import CreateAccount from "./components/CreateAccount";
+import UpdateAccount from "./components/UpdateAccount";
+import DeleteAccount from "./components/DeleteAccount";
+import "./App.css";
 
-    // Simulate login
+
+function App() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [currentUser, setCurrentUser] = useState(null);
+    const [showAllAccounts, setShowAllAccounts] = useState(false); // Default to false
+    const [allAccounts, setAllAccounts] = useState([]);
+
     const handleLogin = (user) => {
         setIsLoggedIn(true);
         setCurrentUser(user);
     };
 
+    const fetchAllAccounts = async () => {
+        try {
+            const response = await axios.get("http://localhost:8080/account-service/accounts");
+            setAllAccounts(response.data);
+            setShowAllAccounts(true); // Show the table after fetching data
+        } catch (error) {
+            console.error("Error fetching all accounts:", error);
+        }
+    };
+
     return (
         <Router>
             <div>
-                {/* Show microservice buttons only if logged in */}
                 {isLoggedIn && (
                     <div className="microservice-buttons">
                         <Link to="/home">
                             <button>Home</button>
                         </Link>
                         <Link to="/account">
-                            <button>Account Service</button>
+                            <button onClick={() => setShowAllAccounts(false)}>Account Service</button>
                         </Link>
                         <Link to="/transaction">
                             <button>Transaction Service</button>
@@ -60,18 +77,22 @@ function App() {
                     </div>
                 )}
 
-                {/* Routes for each microservice */}
+                {isLoggedIn && currentUser?.role === "ADMIN" && (
+                    <AccountNavbar
+                        currentUser={currentUser}
+                        handleViewAllAccounts={fetchAllAccounts}
+                    />
+                )}
+
                 <Routes>
-                    {/* Login Microservice (default route) */}
                     <Route
                         path="/"
                         element={
                             isLoggedIn ? (
                                 <Navigate to="/home" /> // Redirect to Home if already logged in
 
-
                             ) : (
-                                <Login onLogin={handleLogin} /> // Show Login page if not logged in
+                                <Login onLogin={handleLogin} />
                             )
                         }
                     />
@@ -95,21 +116,48 @@ function App() {
                         }
                     />
 
-                    {/* Account Microservice */}
+                    {/* Account Service Routes */}
                     <Route
-                        path="/account/*"
+                        path="/account"
                         element={
                             isLoggedIn ? (
-                                <>
-                                    <AccountNavbar currentUser={currentUser} />
-                                    <Routes>
-                                        <Route path="/" element={<AccountList />} />
-                                        <Route path="/balance" element={<h1>View Balance Page</h1>} />
-                                        <Route path="/upBalance" element={<h1>Deposit/Withdraw Page</h1>} />
-                                    </Routes>
-                                </>
+                                <AccountList
+                                    showAllAccounts={showAllAccounts}
+                                    allAccounts={allAccounts}
+                                    currentUser={currentUser}
+                                />
                             ) : (
-                                <Navigate to="/" /> // Redirect to Login if not logged in
+                                <Navigate to="/" />
+                            )
+                        }
+                    />
+                    <Route
+                        path="/account/create-account"
+                        element={
+                            isLoggedIn && currentUser?.role === "ADMIN" ? (
+                                <CreateAccount fetchAllAccounts={fetchAllAccounts} />
+                            ) : (
+                                <Navigate to="/" />
+                            )
+                        }
+                    />
+                    <Route
+                        path="/account/update-account"
+                        element={
+                            isLoggedIn && currentUser?.role === "ADMIN" ? (
+                                <UpdateAccount fetchAllAccounts={fetchAllAccounts} />
+                            ) : (
+                                <Navigate to="/" />
+                            )
+                        }
+                    />
+                    <Route
+                        path="/account/delete-account"
+                        element={
+                            isLoggedIn && currentUser?.role === "ADMIN" ? (
+                                <DeleteAccount fetchAllAccounts={fetchAllAccounts} />
+                            ) : (
+                                <Navigate to="/" />
                             )
                         }
                     />
@@ -152,8 +200,6 @@ function App() {
                             )
                         }
                     />
-
-                    {/* Transaction Microservice */}
                     <Route
                         path="/transaction/*"
                         element={
@@ -177,6 +223,11 @@ function App() {
                     />
                 </Routes>
             </div>
+            <Routes>
+                <Route path="/" element={<Login />} />
+                <Route path="/home" element={<Home />} />
+                <Route path="/components" element={<AccountList />}/>
+            </Routes>
         </Router>
     );
 }
