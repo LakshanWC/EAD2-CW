@@ -5,6 +5,7 @@ import com.transaction.service.repository.TransactionRepository;
 import com.transaction.service.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -57,7 +58,8 @@ public class TransactionController {
     }
 
     @GetMapping(path = "/all")
-    public List<Transaction> getAllTransactions() {
-        return transactionService.getAllTransactions();
-    }
+    public List<Transaction> getAllTransactions() {return transactionService.getAllTransactions();}
+
+    @GetMapping( "/health")
+    public ResponseEntity<String> checkHealth(){return ResponseEntity.ok("Health check OK");}
 }

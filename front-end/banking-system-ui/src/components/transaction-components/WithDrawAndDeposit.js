@@ -1,211 +1,320 @@
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
-import axios from "axios"; // Import axios for making HTTP requests
+import axios from "axios";
+
+// Constants for configuration
+const TRANSACTION_SERVICE_URL = "http://localhost:8085/transaction-service";
+const ACCOUNT_SERVICE_URL = "http://localhost:8080/account-service";
+const LARGE_TRANSACTION_THRESHOLD = 300000;
+const TRANSACTION_TYPES = {
+    WITHDRAW: "WITHDRAW",
+    DEPOSIT: "DEPOSIT"
+};
 
 function WithdrawDepositPage() {
     const location = useLocation();
-    const [accountNumber, setAccountNumber] = useState("");
-    const [amount, setAmount] = useState("");
-    const [error, setError] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
-    const [transactionStatus, setTransactionStatus] = useState(""); // Track transaction status
+    const [formData, setFormData] = useState({
+        accountNumber: "",
+        amount: ""
+    });
+    const [transactionState, setTransactionState] = useState({
+        error: "",
+        successMessage: "",
+        status: "",
+        isLoading: false
+    });
 
     const isWithdraw = location.pathname === "/transaction/withdraw";
     const isDeposit = location.pathname === "/transaction/deposit";
 
-    // Function to check if the account is valid
-    const checkAccountValidity = async (accountNumber) => {
-        try {
-            const response = await axios.get(`http://localhost:8085/transaction-service/accounts/${accountNumber}`);
-            const accountStatus = response.data;
+    const handleInputChange = (e) => {
+        const { id, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [id]: value
+        }));
+    };
 
-            if (accountStatus === "Account Not Found") {
-                setError("Account not found. Please check the account number.");
-                return false;
-            } else if (accountStatus === "Account is Valid and Active") {
-                return true; // Account is valid and active
-            } else if (accountStatus === "Account Not Active") {
-                setError("Account is not active. Please contact support.");
-                return false;
-            } else {
-                setError("Unexpected response from the server.");
+    // Enhanced service health check with better logging
+    const checkServiceHealth = async () => {
+        try {
+            setTransactionState(prev => ({ ...prev, isLoading: true }));
+
+            const endpoints = [
+                `${TRANSACTION_SERVICE_URL}/transactions/health`,
+                `${ACCOUNT_SERVICE_URL}/accounts/health`
+            ];
+
+            const [transactionHealth, accountHealth] = await Promise.all(
+                endpoints.map(endpoint =>
+                    axios.get(endpoint)
+                        .then(res => {
+                            console.log(`${endpoint} Health:`, res.data);
+                            return res;
+                        })
+                        .catch(err => {
+                            console.error(`${endpoint} Health Check Failed:`, err);
+                            throw err;
+                        })
+                )
+            );
+
+            if (transactionHealth.data !== "Health check OK" || accountHealth.data !== "Health check OK") {
+                const errorMsg = "One or more services are unavailable. Please try again later.";
+                setTransactionState(prev => ({
+                    ...prev,
+                    error: errorMsg,
+                    isLoading: false
+                }));
                 return false;
             }
+
+            return true;
         } catch (error) {
-            console.error("Error checking account validity:", error);
-            setError("An error occurred while checking the account. Please try again.");
+            console.error("Service health check failed:", error);
+            setTransactionState(prev => ({
+                ...prev,
+                error: "Unable to connect to services. Please try again later.",
+                isLoading: false
+            }));
             return false;
         }
     };
 
-    // Function to save the transaction
+    // Account validation function using the specified endpoint
+    const validateAccount = async (accountNumber, setMessage, label = "Account") => {
+        try {
+            console.log(`Validating ${label.toLowerCase()} account: ${accountNumber}`);
+            const response = await axios.get(
+                `${TRANSACTION_SERVICE_URL}/accounts/${accountNumber}`
+            );
+
+            const result = response.data;
+            console.log(`${label} account validation result:`, result);
+
+            if (result === "Account Not Found") {
+                const msg = `${label}  Number: Not Found`;
+                setMessage(msg);
+                console.warn(msg);
+                return false;
+            }
+
+            if (result === "Account is Valid and Active") {
+                setMessage("");
+                console.log(`${label} account is valid and active`);
+                return true;
+            }
+
+            if (result === "Account Not Active") {
+                const msg = `${label} Account Number: is not active`;
+                setMessage(msg);
+                console.warn(msg);
+                return false;
+            }
+
+            const msg = `${label} Account Number: Unexpected validation response`;
+            setMessage(msg);
+            console.warn(msg);
+            return false;
+        } catch (error) {
+            console.error(`Error validating ${label.toLowerCase()} account:`, error);
+            const msg = `${label} Account Number: Validation failed`;
+            setMessage(msg);
+            console.error(msg);
+            return false;
+        }
+    };
+
+    // Account validation wrapper
+    const checkAccountValidity = async (accountNumber) => {
+        const isValid = await validateAccount(
+            accountNumber,
+            (msg) => {
+                setTransactionState(prev => ({
+                    ...prev,
+                    error: msg,
+                    isLoading: false // Reset loading state here
+                }));
+            }
+        );
+
+        return isValid;
+    };
+
+
+    // Enhanced transaction saving
     const saveTransaction = async (accountNumber, transactionType, amount, status) => {
         try {
-            // Get the current date and time
-            const now = new Date();
-
-            // Format the date and time as a string (e.g., "2023-10-05T14:30:00")
-            const formattedDateTime = now.toISOString(); // This includes both date and time
-
             const transactionPayload = {
-                accountNumber: accountNumber,
-                destinationAccountNumber: null, // No destination account for withdrawals/deposits
-                transactionType: transactionType.toUpperCase(), // "WITHDRAW" or "DEPOSIT"
-                amount: amount,
-                status: status, // "SUCCESS" or "ON HOLD"
-                createdAt: formattedDateTime, // Include both date and time
+                accountNumber,
+                destinationAccountNumber: null,
+                transactionType: transactionType.toUpperCase(),
+                amount,
+                status,
+                createdAt: new Date().toISOString(),
                 isActive: 1
             };
 
             const response = await axios.post(
-                "http://localhost:8085/transaction-service/transactions",
+                `${TRANSACTION_SERVICE_URL}/transactions`,
                 transactionPayload
             );
 
             if (response.status === 200) {
-                console.log("Transaction saved successfully:", response.data);
-            } else {
-                console.error("Failed to save transaction:", response.data);
+                console.log("Transaction saved:", response.data);
+                return true;
             }
+            console.error("Transaction save failed:", response.data);
+            return false;
         } catch (error) {
-            console.error("Error saving transaction:", error);
-            throw error; // Propagate the error to handle it in the main function
+            console.error("Transaction save error:", error);
+            throw error;
         }
     };
 
-    // Handle form submission
+    // Enhanced form submission handler
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError(""); // Clear previous errors
-        setSuccessMessage(""); // Clear previous success message
+        setTransactionState({
+            error: "",
+            successMessage: "",
+            status: "",
+            isLoading: true
+        });
 
-        // Validate amount (cannot be negative or zero)
-        if (amount <= 0) {
-            setError("Amount must be a positive number.");
+        // Input validation
+        if (!formData.accountNumber || !formData.amount) {
+            setTransactionState(prev => ({
+                ...prev,
+                error: "Please fill in all fields",
+                isLoading: false
+            }));
             return;
         }
 
-        // Check if the account is valid for both deposit and withdraw
-        const isAccountValid = await checkAccountValidity(accountNumber);
-        if (!isAccountValid) {
-            // Error message is already set in checkAccountValidity
+        if (parseFloat(formData.amount) <= 0) {
+            setTransactionState(prev => ({
+                ...prev,
+                error: "Amount must be a positive number",
+                isLoading: false
+            }));
             return;
         }
 
-        // If it's a withdrawal, check if the account has sufficient balance
-        if (isWithdraw) {
-            try {
-                const response = await axios.get(`http://localhost:8085/transaction-service/accounts/${accountNumber}/balance`, {
-                    params: { amount: amount }
-                });
-                console.log("Balance check response:", response.data); // Debugging line
-                if (response.data !== "Sufficient Balance") { // Check for "Sufficient Balance"
-                    setError("Insufficient balance for withdrawal.");
+        try {
+            // Service health check
+            const servicesHealthy = await checkServiceHealth();
+            if (!servicesHealthy) return;
+
+            // Account validation using the validateAccount function
+            const isAccountValid = await checkAccountValidity(formData.accountNumber);
+            if (!isAccountValid) return;
+
+            // Balance check for withdrawals
+            if (isWithdraw) {
+                const balanceResponse = await axios.get(
+                    `${ACCOUNT_SERVICE_URL}/accounts/${formData.accountNumber}/balance`,
+                    { params: { amount: formData.amount } }
+                );
+
+                if (balanceResponse.data !== "Sufficient Balance") {
+                    setTransactionState(prev => ({
+                        ...prev,
+                        error: "Insufficient balance for withdrawal.",
+                        isLoading: false
+                    }));
                     return;
                 }
-            } catch (error) {
-                console.error("Error checking balance sufficiency:", error);
-                setError("An error occurred while checking the balance.");
+            }
+
+            // Determine transaction status
+            const status = parseFloat(formData.amount) > LARGE_TRANSACTION_THRESHOLD
+                ? "ON HOLD"
+                : "SUCCESS";
+
+            setTransactionState(prev => ({ ...prev, status }));
+
+            // Process transaction
+            const transactionType = isWithdraw ? TRANSACTION_TYPES.WITHDRAW : TRANSACTION_TYPES.DEPOSIT;
+
+            if (status === "ON HOLD") {
+                await saveTransaction(
+                    formData.accountNumber,
+                    transactionType,
+                    formData.amount,
+                    status
+                );
+
+                setTransactionState({
+                    error: "",
+                    successMessage: "Your transaction has been placed on hold as it has been flagged as suspicious behavior. Please contact support or wait for an admin to confirm your transaction.",
+                    status: "ON HOLD",
+                    isLoading: false
+                });
+
+                setFormData({ accountNumber: "", amount: "" });
                 return;
             }
-        }
 
-        // Define a threshold for large transactions
-        const largeTransactionThreshold = 300000; // Threshold set to 300,000
-
-        // Determine the transaction status based on the amount
-        const status = amount > largeTransactionThreshold ? "ON HOLD" : "SUCCESS";
-        setTransactionStatus(status); // Set transaction status
-
-        // If the transaction is ON HOLD, save it and notify the user
-        if (status === "ON HOLD") {
-            try {
-                const transactionType = isWithdraw ? "WITHDRAW" : "DEPOSIT";
-                await saveTransaction(accountNumber, transactionType, amount, status);
-
-                // Call the additional endpoint for deposit or withdrawal
-                if (isWithdraw) {
-                    await axios.get(
-                        `http://localhost:8080/accounts/upBalance?accountNumber=${accountNumber}&amount=${amount}&operation=withdrawal`
-                    );
-                } else {
-                    await axios.get(
-                        `http://localhost:8080/accounts/upBalance?accountNumber=${accountNumber}&amount=${amount}&operation=deposit`
-                    );
-                }
-
-                // Clear the input fields
-                setAccountNumber("");
-                setAmount("");
-
-                // Display ON HOLD message
-                setSuccessMessage(
-                    "Your transaction has been placed on hold as it has been flagged as suspicious behavior. " +
-                    "Please contact support or wait for an admin to confirm your transaction."
-                );
-            } catch (error) {
-                console.error("Error saving transaction:", error);
-                setError("An error occurred while saving the transaction.");
-            }
-            return; // Exit the function after placing the transaction ON HOLD
-        }
-
-        // If the transaction is below the threshold, proceed as usual
-        try {
-            const addAmount = isDeposit; // true for deposit, false for withdrawal
-            const response = await axios.patch(
-                `http://localhost:8085/transaction-service/accounts/${accountNumber}`,
-                {}, // No request body needed
-                {
-                    params: {
-                        amount: amount,
-                        addAmount: addAmount
-                    }
-                }
+            // Normal transaction processing
+            const addAmount = isDeposit;
+            const updateResponse = await axios.patch(
+                `${ACCOUNT_SERVICE_URL}/accounts/${formData.accountNumber}`,
+                {},
+                { params: { amount: formData.amount, addAmount } }
             );
 
-            if (response.status === 200) {
-                // Save the transaction after a successful withdrawal or deposit
-                const transactionType = isWithdraw ? "WITHDRAW" : "DEPOSIT";
-                await saveTransaction(accountNumber, transactionType, amount, status);
+            if (updateResponse.status === 200) {
+                await saveTransaction(
+                    formData.accountNumber,
+                    transactionType,
+                    formData.amount,
+                    status
+                );
 
-                // Call the additional endpoint for deposit or withdrawal
-                if (isWithdraw) {
-                    await axios.post(
-                        `http://localhost:8080/account-service/accounts/upBalance?accountNumber=${accountNumber}&amount=${amount}&operation=withdrawal`
-                    );
-                } else {
-                    await axios.post(
-                        `http://localhost:8080/account-service/accounts/upBalance?accountNumber=${accountNumber}&amount=${amount}&operation=deposit`
-                    );
-                }
+                setTransactionState({
+                    error: "",
+                    successMessage: `${isWithdraw ? "Withdrawal" : "Deposit"} successful!`,
+                    status: "SUCCESS",
+                    isLoading: false
+                });
 
-                // Clear the input fields
-                setAccountNumber("");
-                setAmount("");
-
-                // Display success message
-                setSuccessMessage(`${isWithdraw ? "Withdrawal" : "Deposit"} successful!`);
+                setFormData({ accountNumber: "", amount: "" });
             } else {
-                setError("Transaction failed. Please try again.");
+                setTransactionState(prev => ({
+                    ...prev,
+                    error: "Transaction failed. Please try again.",
+                    isLoading: false
+                }));
             }
         } catch (error) {
-            console.error("Error during transaction:", error);
-            setError("An error occurred during the transaction.");
+            console.error("Transaction error:", error);
+            setTransactionState(prev => ({
+                ...prev,
+                error: "An error occurred during the transaction.",
+                isLoading: false
+            }));
         }
     };
-
 
     return (
         <div style={styles.container}>
             <h1 style={styles.title}>{isWithdraw ? "Withdraw" : "Deposit"}</h1>
             <p style={styles.subtitle}>Please enter the details for your transaction.</p>
-            {error && <p style={styles.error}>{error}</p>}
-            {successMessage && (
-                <p style={transactionStatus === "ON HOLD" ? styles.onHoldMessage : styles.success}>
-                    {successMessage}
+
+            {transactionState.error && (
+                <p style={styles.error}>{transactionState.error}</p>
+            )}
+
+            {transactionState.successMessage && (
+                <p style={transactionState.status === "ON HOLD"
+                    ? styles.onHoldMessage
+                    : styles.success
+                }>
+                    {transactionState.successMessage}
                 </p>
             )}
+
             <form onSubmit={handleSubmit} style={styles.form}>
                 <div style={styles.inputGroup}>
                     <label htmlFor="accountNumber" style={styles.label}>
@@ -214,12 +323,13 @@ function WithdrawDepositPage() {
                     <input
                         type="text"
                         id="accountNumber"
-                        value={accountNumber}
-                        onChange={(e) => setAccountNumber(e.target.value)}
+                        value={formData.accountNumber}
+                        onChange={handleInputChange}
                         required
                         style={styles.input}
                     />
                 </div>
+
                 <div style={styles.inputGroup}>
                     <label htmlFor="amount" style={styles.label}>
                         Amount:
@@ -227,89 +337,137 @@ function WithdrawDepositPage() {
                     <input
                         type="number"
                         id="amount"
-                        value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
+                        value={formData.amount}
+                        onChange={handleInputChange}
                         required
-                        min="0" // Prevent negative values in the input
+                        min="0.01"
+                        step="0.01"
                         style={styles.input}
                     />
                 </div>
-                <button type="submit" style={styles.button}>
-                    Submit
+
+                <button
+                    type="submit"
+                    style={{
+                        ...styles.button,
+                        backgroundColor: transactionState.isLoading ? "#cccccc" : "#4CAF50"
+                    }}
+                    disabled={transactionState.isLoading}
+                >
+                    {transactionState.isLoading ? (
+                        <>
+                            <span style={{ marginRight: "8px" }}>Processing...</span>
+                            <i className="fa fa-spinner fa-spin"></i>
+                        </>
+                    ) : "Submit"}
                 </button>
             </form>
         </div>
     );
 }
 
-// Styles for the component
+// Styles remain the same as previous version
 const styles = {
     container: {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        padding: "20px",
-        fontFamily: "'Arial', sans-serif",
+        padding: "2rem",
+        fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+        maxWidth: "600px",
+        margin: "0 auto",
+        backgroundColor: "#f5f5f5",
+        borderRadius: "10px",
+        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)"
     },
     title: {
         fontSize: "2rem",
-        color: "#333",
-        marginBottom: "10px",
+        color: "#2c3e50",
+        marginBottom: "0.5rem",
+        fontWeight: "600"
     },
     subtitle: {
-        fontSize: "1.2rem",
-        color: "#666",
-        marginBottom: "20px",
+        fontSize: "1rem",
+        color: "#7f8c8d",
+        marginBottom: "2rem",
+        textAlign: "center"
     },
     form: {
-        display: "flex",
-        flexDirection: "column",
         width: "100%",
-        maxWidth: "400px",
-        padding: "20px",
+        padding: "1.5rem",
+        backgroundColor: "white",
         borderRadius: "8px",
-        backgroundColor: "#f8f8f8",
-        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.05)"
     },
     inputGroup: {
-        marginBottom: "15px",
+        marginBottom: "1.5rem"
     },
     label: {
-        fontSize: "1rem",
-        color: "#333",
-        marginBottom: "5px",
+        display: "block",
+        fontSize: "0.9rem",
+        color: "#34495e",
+        marginBottom: "0.5rem",
+        fontWeight: "500"
     },
     input: {
         width: "100%",
-        padding: "10px",
+        padding: "0.75rem",
         fontSize: "1rem",
         borderRadius: "4px",
-        border: "1px solid #ccc",
+        border: "1px solid #bdc3c7",
         boxSizing: "border-box",
+        transition: "border-color 0.3s",
+        ":focus": {
+            borderColor: "#3498db",
+            outline: "none",
+            boxShadow: "0 0 0 2px rgba(52, 152, 219, 0.2)"
+        }
     },
     button: {
-        padding: "10px 20px",
+        width: "100%",
+        padding: "0.75rem",
         fontSize: "1rem",
-        backgroundColor: "#4CAF50",
-        color: "#fff",
+        fontWeight: "600",
+        color: "white",
         border: "none",
         borderRadius: "4px",
         cursor: "pointer",
-        transition: "background-color 0.3s",
+        transition: "background-color 0.3s, transform 0.2s",
+        ":hover": {
+            transform: "translateY(-1px)"
+        },
+        ":active": {
+            transform: "translateY(0)"
+        }
     },
     error: {
-        color: "red",
-        marginBottom: "15px",
+        color: "#e74c3c",
+        marginBottom: "1rem",
+        padding: "0.75rem",
+        backgroundColor: "#fadbd8",
+        borderRadius: "4px",
+        width: "100%",
+        textAlign: "center"
     },
     success: {
-        color: "green",
-        marginBottom: "15px",
+        color: "#27ae60",
+        marginBottom: "1rem",
+        padding: "0.75rem",
+        backgroundColor: "#d5f5e3",
+        borderRadius: "4px",
+        width: "100%",
+        textAlign: "center"
     },
     onHoldMessage: {
-        color: "red",
-        fontWeight: "bold",
-        marginBottom: "15px",
-    },
+        color: "#e67e22",
+        fontWeight: "600",
+        marginBottom: "1rem",
+        padding: "0.75rem",
+        backgroundColor: "#fdebd0",
+        borderRadius: "4px",
+        width: "100%",
+        textAlign: "center"
+    }
 };
 
 export default WithdrawDepositPage;

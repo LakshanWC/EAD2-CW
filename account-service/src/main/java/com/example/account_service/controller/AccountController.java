@@ -80,4 +80,8 @@ public class AccountController {
     public void deleteAccount(@PathVariable int accId) {
         accountService.deleteAccount(accId);
     }
+
+
+    @GetMapping("/health")
+    public ResponseEntity<String> checkHealth(){return ResponseEntity.ok("Health check OK");}
 }
