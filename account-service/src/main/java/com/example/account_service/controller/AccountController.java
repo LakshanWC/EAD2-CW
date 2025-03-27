@@ -81,7 +81,9 @@ public class AccountController {
         accountService.deleteAccount(accId);
     }
 
-
+/*
     @GetMapping("/health")
     public ResponseEntity<String> checkHealth(){return ResponseEntity.ok("Health check OK");}
+
+*/
 }
