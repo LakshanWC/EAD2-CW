@@ -1,21 +1,37 @@
-<<<<<<< Updated upstream
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes, Link, Navigate } from "react-router-dom";
-import axios from "axios";
-import Login from "./Login";
-import Home from "./Home";
-import AccountList from "./components/AccountList";
+import Login from "./Login"; // Import the Login component
+import Home from "./Home"; // Import the Home component
+import AccountList from "./components/AccountList"; // Import the AccountList component
 import AccountNavbar from "./components/Navbar";
+
+import TransactionOverview from "./components/transaction-components/TransactionOverview";
+import TransactionHistory from "./components/transaction-components/TransactionHistory";
+import Transfer from "./components/transaction-components/Transfer";
+
+// Import Loan Service Components
+import LoanOverview from "./components/loanService-components/LoanOverview";
+import LoanApplicationForm from "./components/loanService-components/LoanApplicationForm";
+import LoanCalculator from "./components/loanService-components/LoanCalculator";
+import LoanStatus from "./components/loanService-components/LoanStatus";
+import LoanApplicationDelete from "./components/loanService-components/LoanApplicationDelete";
+import WithDrawAndDeposit from "./components/transaction-components/WithDrawAndDeposit";
+import AdminView from "./components/transaction-components/AdminView";
+
+//user service import
+import Register from "./components/user-components/Register";
+import UserOverView from "./components/user-components/UserOverView";
+import UserUpdate from "./components/user-components/UserUpdate";
+import UserDelete from "./components/user-components/UserDelete";
+import AllUsers from "./components/user-components/AllUsers";
+import Profile from "./components/user-components/Profile";
+
+import axios from "axios";
 import CreateAccount from "./components/CreateAccount";
 import UpdateAccount from "./components/UpdateAccount";
 import DeleteAccount from "./components/DeleteAccount";
 import "./App.css";
-=======
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from "./Login";  // Import the Login component
-import Home from "./Home";    // Import the Home component
-import AccountList from "./components/AccountList";
->>>>>>> Stashed changes
+
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -40,7 +56,6 @@ function App() {
 
     return (
         <Router>
-<<<<<<< Updated upstream
             <div>
                 {isLoggedIn && (
                     <div className="microservice-buttons">
@@ -53,8 +68,11 @@ function App() {
                         <Link to="/transaction">
                             <button>Transaction Service</button>
                         </Link>
-                        <Link to="/loan">
+                        <Link to="/loan-service">
                             <button>Loan Service</button>
+                        </Link>
+                        <Link to={"/user-service"}>
+                            <button>User Service</button>
                         </Link>
                     </div>
                 )}
@@ -71,15 +89,31 @@ function App() {
                         path="/"
                         element={
                             isLoggedIn ? (
-                                <Navigate to="/home" />
+                                <Navigate to="/home" /> // Redirect to Home if already logged in
+
                             ) : (
                                 <Login onLogin={handleLogin} />
                             )
                         }
                     />
+
+                    <Route path="/register" element={<Register />} />
+
+
+
+                    {/* Home Microservice */}
                     <Route
                         path="/home"
-                        element={isLoggedIn ? <Home /> : <Navigate to="/" />}
+                        element={
+                            isLoggedIn ? (
+                                <>
+                                    <AccountNavbar currentUser={currentUser} />
+                                    <Home user={currentUser} />
+                                </>
+                            ) : (
+                                <Navigate to="/" /> // Redirect to Login if not logged in
+                            )
+                        }
                     />
 
                     {/* Account Service Routes */}
@@ -128,26 +162,74 @@ function App() {
                         }
                     />
 
-                    {/* Other Microservices */}
+                    {/user microservice/}
+                    <Route path="/user-service/*"
+                           element={
+                               isLoggedIn?(
+                                   <>
+                                       <Routes>
+                                           <Route path={"/"} element={<UserOverView currentUser={currentUser}/>}/>
+                                           <Route path={"/update"} element={<UserUpdate/>}/>
+                                           <Route path={"/delete"} element={<UserDelete/>}/>
+                                           <Route path={"/all"} element={<AllUsers/>}/>
+                                           <Route path={"/view"} element={<Profile currentUser={currentUser}/>}/>
+                                       </Routes>
+                                   </>
+                               ):(
+                                   <Navigate to="/"/>
+                               )
+                           }
+                    />
+
+                    {/* Loan Microservice */}
                     <Route
-                        path="/loan"
-                        element={isLoggedIn ? <h1>Loan Microservice</h1> : <Navigate to="/" />}
+                        path="/loan-service/*"
+                        element={
+                            isLoggedIn ? (
+                                <>
+                                    <Routes>
+                                        <Route path="/" element={<LoanOverview currentUser={currentUser} />} />
+                                        <Route path="apply" element={<LoanApplicationForm currentUser={currentUser} />} />
+                                        <Route path="calculator" element={<LoanCalculator currentUser={currentUser} />} />
+                                        <Route path="status" element={<LoanStatus currentUser={currentUser} />} />
+                                        <Route path="delete" element={<LoanApplicationDelete currentUser={currentUser} />} />
+                                    </Routes>
+                                </>
+                            ) : (
+                                <Navigate to="/" />
+                            )
+                        }
                     />
                     <Route
-                        path="/transaction"
-                        element={isLoggedIn ? <h1>Transaction Microservice</h1> : <Navigate to="/" />}
+                        path="/transaction/*"
+                        element={
+                            isLoggedIn ? (
+                                <>
+                                    <h1>Transaction Microservice</h1>
+                                    {/* <TransactionOverview currentUser={currentUser}/>*/}
+                                    <Routes>
+                                        <Route path="/" element={<TransactionOverview currentUser={currentUser}/> } />
+                                        <Route path="transfer" element={<Transfer />} />
+                                        <Route path="history" element={<TransactionHistory />} />
+                                        <Route path={"withdraw"} element={<WithDrawAndDeposit/>}/>
+                                        <Route path={"deposit"} element={<WithDrawAndDeposit/>}/>
+                                        <Route path={"admin-view"} element={<AdminView/>}/>
+                                    </Routes>
+                                </>
+                            ) : (
+                                <Navigate to="/" />
+                            )
+                        }
                     />
                 </Routes>
             </div>
-=======
             <Routes>
                 <Route path="/" element={<Login />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/components" element={<AccountList />}/>
             </Routes>
->>>>>>> Stashed changes
         </Router>
     );
 }
 
-export default App;
+export default App;
