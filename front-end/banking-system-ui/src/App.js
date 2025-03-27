@@ -162,6 +162,7 @@ function App() {
                         }
                     />
 
+
                     {/user microservice/}
                     <Route path="/user-service/*"
                            element={
@@ -179,6 +180,7 @@ function App() {
                                    <Navigate to="/"/>
                                )
                            }
+
                     />
 
                     {/* Loan Microservice */}

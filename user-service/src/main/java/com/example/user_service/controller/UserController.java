@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/users")
 public class UserController {
     @Autowired
@@ -37,4 +38,14 @@ public class UserController {
     public User getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
+
+
+
+    @GetMapping("/check/{userName}")
+    public User userExists(@PathVariable String userName) {return userService.userExists(userName);}
+
+
+    @GetMapping(path = "/validate/",params = {"userName","password"})
+    public String  validateCredentials(@RequestParam String userName,@RequestParam String password)
+    {return userService.validateCredentials(userName, password);}
 }

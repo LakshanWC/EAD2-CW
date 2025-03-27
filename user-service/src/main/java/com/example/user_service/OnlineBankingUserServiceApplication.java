@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class OnlineBankingUserServiceApplication {
 
 	public static void main(String[] args) {
-
 		SpringApplication.run(OnlineBankingUserServiceApplication.class, args);
 	}
 

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./AccountList.css"; // CSS for styling
 
@@ -16,7 +17,7 @@ function AccountList({ showAllAccounts, allAccounts, currentUser, fetchAllAccoun
     const [showDeleteForm, setShowDeleteForm] = useState(false);
 
     // Reset forms when showAllAccounts changes
-    React.useEffect(() => {
+    useEffect(() => {
         if (showAllAccounts) {
             setShowCreateForm(false);
             setShowUpdateForm(false);

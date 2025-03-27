@@ -14,8 +14,8 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 
     @Query("SELECT t FROM Transaction t WHERE t.accountNumber=?1 " +
             "AND (?2 is NULL OR t.transactionType = ?2) " +
-            "AND(?3 is NULL OR t.createdAt = ?3) AND t.isActive=1")
-    public List<Transaction> getAllTransactionsByAccountNumberAndType(String accountNumber,String transactionType,LocalDate createdAt);
+            "AND t.isActive=1")
+    public List<Transaction> getTransactionsByFilters(String accountNumber,String transactionType);
 
 
     @Modifying
@@ -24,9 +24,9 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 
     @Modifying
     @Query("UPDATE Transaction t SET t.isActive=?2 WHERE t.transactionId=?1")
-    public int softDeleteTransactionById(int id,int is_active);
+    public int hideTransactionById(int id,int is_active);
 
     @Modifying
-    @Query("UPDATE Transaction t SET t.isActive=1 WHERE t.isActive=0")
-    public int resetSoftDeletedTransactions();
+    @Query("UPDATE Transaction t SET t.isActive=1 WHERE t.isActive=0 AND t.accountNumber=?1")
+    public int resetHiddenTransactions(String accountNumber);
 }

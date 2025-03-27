@@ -4,6 +4,8 @@ import com.transaction.service.entity.Transaction;
 import com.transaction.service.repository.TransactionRepository;
 import com.transaction.service.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -13,43 +15,51 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("transactions")
 public class TransactionController {
 
+    //to filter out the recodes
     @Autowired
     private TransactionService transactionService;
-    @GetMapping(path = "/transactions")
-    public List<Transaction> getAllTransactionsByAccountNumberAndType(
+    @GetMapping
+    public List<Transaction> getTransactionsByFilters(
             @Validated @RequestParam String accountNumber,
-            @Validated @RequestParam(required = false) String transactionType,
-            @Validated @RequestParam(required = false) LocalDate createdAt) {
-        return transactionService.getAllTransactionsByAccountNumberAndType(accountNumber, transactionType, createdAt);
+            @Validated @RequestParam(required = false) String transactionType){
+        return transactionService.getTransactionsByFilters(accountNumber, transactionType);
     }
 
-    @PostMapping(path = "/transactions")
+    //save the hole recode
+    @PostMapping
     public Transaction saveTransaction(@Validated @RequestBody Transaction transaction) {
         return transactionService.saveTransaction(transaction);
     }
 
-    @DeleteMapping(path = "/transactions/{id}")
-    public String deleteTransactionById(@PathVariable int id) {
-       return transactionService.softDeleteTransactionById(id,0);
+    //mark as hidden in the column in  the given recode by the id
+    @PatchMapping(path = "{id}")
+    public String hideTransactionById(@PathVariable int id) {
+       return transactionService.hideTransactionById(id,0);
     }
 
-    //http://localhost:8081/transaction-service/transaction/1
-
-    @GetMapping(path = "/transaction/{id}")
+    //get a transaction recode by the id
+    @GetMapping(path = "/{id}")
     public Transaction getTransactionById(@PathVariable int id) {
         return transactionService.getTransactionById(id);
     }
 
-    @PatchMapping(path = "/transaction/{id}")
+    //this will update transactoinStatus only from a given id
+    @PatchMapping(path = "update/{id}")
     public String updateTransactionStatusById(@Validated @PathVariable int id ,@RequestParam String transactionStatus){
         return transactionService.updateTransactionStatusById(id,transactionStatus);
     }
 
-    @PatchMapping(path = "/transaction/reset-soft-delete")
-    public String restSoftDeleteTransactions(){
-        return transactionService.resetSoftDeletedTransactions();
+    @PatchMapping(path = {"{accountNumber}"}, params = "resetHidden")
+    public String resetHiddenTransactions(@PathVariable String accountNumber,@RequestParam boolean resetHidden) {
+        return transactionService.resetHiddenTransactions(accountNumber,resetHidden);
     }
 
+    @GetMapping(path = "/all")
+    public List<Transaction> getAllTransactions() {return transactionService.getAllTransactions();}
+
+    @GetMapping( "/health")
+    public ResponseEntity<String> checkHealth(){return ResponseEntity.ok("Health check OK");}
 }

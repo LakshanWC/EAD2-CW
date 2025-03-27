@@ -50,4 +50,5 @@ function Navbar({ currentUser, handleViewAllAccounts }) {
     );
 }
 
+
 export default Navbar;

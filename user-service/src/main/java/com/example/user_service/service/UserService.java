@@ -5,6 +5,7 @@ import com.example.user_service.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -29,5 +30,16 @@ public class UserService {
 
     public User getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
+    }
+
+    public User userExists(String userName) {
+        Optional<User> user = userRepository.findByUsername(userName);
+        if (user.isPresent()) {return user.get();}
+        return null;
+    }
+
+    public String validateCredentials(String userName, String password) {
+        if(userRepository.validateCredentials(userName,password)==1){return "Success";}
+        return "Wrong Credentials";
     }
 }

@@ -12,6 +12,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/accounts")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AccountController {
 
     @Autowired
@@ -50,7 +51,6 @@ public class AccountController {
     }
 
 
-
     // Get all accounts
     @GetMapping
     public List<Account> getAllAccounts() {
@@ -80,4 +80,8 @@ public class AccountController {
     public void deleteAccount(@PathVariable int accId) {
         accountService.deleteAccount(accId);
     }
+
+
+    @GetMapping("/health")
+    public ResponseEntity<String> checkHealth(){return ResponseEntity.ok("Health check OK");}
 }

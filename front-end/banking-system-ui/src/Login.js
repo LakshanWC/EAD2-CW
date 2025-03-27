@@ -15,7 +15,7 @@ function Login({ onLogin }) {
         password: "admin123",
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Admin login logic
@@ -27,18 +27,38 @@ function Login({ onLogin }) {
             } else {
                 alert("Invalid admin credentials.");
             }
+            return; // Exit the function early if the login type is admin
         }
 
         // User login logic
-        else if (loginType === "user") {
-            if (username && password) {
-                const user = { username, role: "USER" }; // Set role to USER
-                onLogin(user); // Notify App.js that login was successful
-                navigate("/home"); // Navigate to the home page
-            } else {
-                alert("Please enter username and password.");
+        if (username && password) {
+            try {
+                // Call the API endpoint to validate user credentials
+                const response = await fetch(
+                    `http://localhost:8086/users/validate/?userName=${username}&password=${password}`
+                );
+                const result = await response.text(); // Get the response text
+
+                if (result === "Success") {
+                    const user = { username, role: "USER" }; // Set role to USER
+                    onLogin(user); // Notify App.js that login was successful
+                    navigate("/home"); // Navigate to the home page
+                } else if (result === "Wrong Credentials") {
+                    alert("Invalid username or password.");
+                } else {
+                    alert("An error occurred. Please try again.");
+                }
+            } catch (error) {
+                console.error("Error during login:", error);
+                alert("An error occurred. Please try again.");
             }
+        } else {
+            alert("Please enter username and password.");
         }
+    };
+
+    const handleRegisterClick = () => {
+        navigate("/register"); // Navigate to the register page
     };
 
     return (
@@ -81,7 +101,7 @@ function Login({ onLogin }) {
                             />
                         </div>
                         <br />
-                        <button type="button">Register</button>{" "}
+                        <button type="button" onClick={handleRegisterClick}>Register</button>{" "}
                         <button type="submit">Login</button>
                     </form>
                 </div>
