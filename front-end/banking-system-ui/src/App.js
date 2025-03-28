@@ -213,7 +213,6 @@ function App() {
                         element={
                             isLoggedIn ? (
                                 <>
-                                    <h1>Transaction Microservice</h1>
                                     {/* <TransactionOverview currentUser={currentUser}/>*/}
                                     <Routes>
                                         <Route path="/" element={<TransactionOverview currentUser={currentUser}/> } />

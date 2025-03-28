@@ -35,7 +35,7 @@ function Login({ onLogin }) {
             try {
                 // Call the API endpoint to validate user credentials
                 const response = await fetch(
-                    `http://localhost:8086/users/validate/?userName=${username}&password=${password}`
+                    `http://localhost:8086/user-service/users/validate/?userName=${username}&password=${password}`
                 );
                 const result = await response.text(); // Get the response text
 
