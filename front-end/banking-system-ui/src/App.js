@@ -77,8 +77,9 @@ function App() {
                     </div>
                 )}
 
+
                 {isLoggedIn && currentUser?.role === "ADMIN" && (
-                    <AccountNavbar
+                     <AccountNavbar
                         currentUser={currentUser}
                         handleViewAllAccounts={fetchAllAccounts}
                     />
@@ -107,7 +108,6 @@ function App() {
                         element={
                             isLoggedIn ? (
                                 <>
-                                    <AccountNavbar currentUser={currentUser} />
                                     <Home user={currentUser} />
                                 </>
                             ) : (
@@ -163,7 +163,7 @@ function App() {
                     />
 
 
-                    {/user microservice/}
+                    {/*user microservice*/}
                     <Route path="/user-service/*"
                            element={
                                isLoggedIn?(
@@ -225,13 +225,8 @@ function App() {
                     />
                 </Routes>
             </div>
-            <Routes>
-                <Route path="/" element={<Login />} />
-                <Route path="/home" element={<Home />} />
-                <Route path="/components" element={<AccountList />}/>
-            </Routes>
         </Router>
     );
 }
 
-export default App;
+export default App;

@@ -10,7 +10,7 @@ function Navbar({ currentUser, handleViewAllAccounts }) {
         <>
             <nav className="navbar">
                 <div className="navbar-logo">
-                    <Link to="/">Account Service</Link>
+                    {/*<Link to="/">Account Service</Link>*/}
                 </div>
             </nav>
 

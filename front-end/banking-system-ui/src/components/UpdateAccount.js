@@ -31,16 +31,38 @@ function UpdateAccount({ fetchAllAccounts }) {
                 updatedAccountData
             );
 
+            console.log("Full response:", response); // Log the entire response object
+            console.log("Response data:", response.data); // Log just the response data
+            console.log("Response status:", response.status); // Log the status code
+            console.log("Response headers:", response.headers); // Log the headers
+
             if (response.status === 200) {
                 console.log("Account updated:", response.data);
                 setError("Account updated successfully!");
                 fetchAllAccounts(); // Refresh the account list
             } else {
+                console.log("Unexpected response status:", response.status);
                 setError("Failed to update account. Please try again.");
             }
         } catch (error) {
             console.error("Error updating account:", error);
-            setError("Failed to update account. Please try again.");
+
+            // Log detailed error information
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                console.error("Error response data:", error.response.data);
+                console.error("Error status:", error.response.status);
+                console.error("Error headers:", error.response.headers);
+                setError(`Error: ${error.response.data.message || error.response.statusText}`);
+            } else if (error.request) {
+                // The request was made but no response was received
+                console.error("No response received:", error.request);
+                setError("No response from server. Please try again.");
+            } else {
+                // Something happened in setting up the request
+                console.error("Request setup error:", error.message);
+                setError("Error setting up request: " + error.message);
+            }
         } finally {
             setIsLoading(false);
         }
