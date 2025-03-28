@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="ba5281d6-4943-4c59-9890-c2adf22aea35" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/front-end/banking-system-ui/src/components/AllAccounts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/banking-system-ui/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/banking-system-ui/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/banking-system-ui/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/banking-system-ui/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/banking-system-ui/src/components/AccountList.css" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/banking-system-ui/src/components/AccountList.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/banking-system-ui/src/components/AccountList.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/banking-system-ui/src/components/AccountList.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/banking-system-ui/src/components/Navbar.css" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/banking-system-ui/src/components/Navbar.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/banking-system-ui/src/components/Navbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/banking-system-ui/src/components/Navbar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/banking-system-ui/src/components/loanService-components/LoanApplicationDelete.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/banking-system-ui/src/components/loanService-components/LoanApplicationDelete.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/banking-system-ui/src/components/loanService-components/LoanApplicationForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/banking-system-ui/src/components/loanService-components/LoanApplicationForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/banking-system-ui/src/components/loanService-components/LoanCalculator.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/banking-system-ui/src/components/loanService-components/LoanCalculator.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/banking-system-ui/src/components/loanService-components/LoanOverview.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/banking-system-ui/src/components/loanService-components/LoanOverview.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-end/banking-system-ui/src/components/loanService-components/LoanStatus.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/banking-system-ui/src/components/loanService-components/LoanStatus.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,9 +20,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 5
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Shady0101"
+  }
 }]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/LakshanWC/EAD2-CW.git",
+    "accountId": "49dda0de-4bcd-4ef4-8f86-0071e0d7008d"
+  }
+}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
   <component name="ProjectId" id="2uXohW0Ml2ToQ0IvbGd8idg687D" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -33,16 +47,30 @@
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/New folder (2)/EAD2-CW/front-end/banking-system-ui",
+    "last_opened_file_path": "C:/Users/jayaw/OneDrive/Documents/GitHub/EAD2-CW/loanService/pom.xml",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "npm.start.executor": "Run",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="start" type="js.build_tools.npm" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/front-end/banking-system-ui/package.json" />
+      <command value="start" />
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.25659.59" />
-        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.25659.59" />
+        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.23654.189" />
+        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-IU-243.23654.189" />
       </set>
     </attachedChunks>
   </component>
@@ -55,6 +83,7 @@
       <option name="presentableId" value="Default" />
       <updated>1742404399204</updated>
       <workItem from="1742404400376" duration="38000" />
+      <workItem from="1743139611304" duration="1231000" />
     </task>
     <servers />
   </component>
