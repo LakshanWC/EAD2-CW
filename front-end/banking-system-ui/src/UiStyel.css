@@ -1,55 +1,203 @@
-/* Ensuring the login container takes up full height */
+/* Main Container */
 .login-container {
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Ensures the height of the container is at least 100% of the viewport height */
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Header Section */
+.login-header {
+    text-align: center;
+    padding: 2rem 0 1rem;
+}
+
+.login-title {
+    font-size: 2.5rem;
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.login-bar {
+    height: 6px;
+    background: linear-gradient(90deg, #7b5fc4, #A28DD6);
+    width: 80%;
+    max-width: 400px;
+    margin: 0 auto;
+    border-radius: 3px;
+}
+
+/* Main Content Area */
 .center-middle {
-    flex-grow: 1; /* This allows the main content to take up available space */
+    flex-grow: 1;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 2rem;
 }
 
 .center-box {
-    border: 1px solid #716767;
-    padding: 20px;
-    border: 3px solid #716767;
-    text-align: center;
-    box-shadow: 1px 2px 3px 1px rgba(0, 0, 0, 0.6);
+    background-color: white;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    border: 1px solid #e2e8f0;
 }
 
+/* Form Elements */
+.login-dropdown {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    background-color: #f8fafc;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 20px;
+}
+
+.login-dropdown:focus {
+    outline: none;
+    border-color: #7b5fc4;
+    box-shadow: 0 0 0 3px rgba(123, 95, 196, 0.2);
+}
+
+.login-form {
+    margin-top: 1rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #4a5568;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: #f8fafc;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #7b5fc4;
+    box-shadow: 0 0 0 3px rgba(123, 95, 196, 0.2);
+}
+
+/* Buttons */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.login-button, .register-button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex: 1;
+}
+
+.login-button {
+    background-color: #7b5fc4;
+    color: white;
+}
+
+.login-button:hover {
+    background-color: #6a4fb3;
+    transform: translateY(-1px);
+}
+
+.register-button {
+    background-color: #edf2f7;
+    color: #4a5568;
+}
+
+.register-button:hover {
+    background-color: #e2e8f0;
+    transform: translateY(-1px);
+}
+
+/* Error Message */
+.error-message {
+    color: #e53e3e;
+    margin: 1rem 0;
+    padding: 0.75rem;
+    background-color: #fff5f5;
+    border-radius: 8px;
+    border-left: 4px solid #e53e3e;
+}
+
+/* Footer */
 .page-footer {
-    background-color: #7b5fc4;
-    padding: 10px;
+    background: linear-gradient(90deg, #7b5fc4, #A28DD6);
+    padding: 1rem;
     text-align: center;
-    margin-top: auto; /* Pushes the footer to the bottom */
+    margin-top: auto;
+    color: white;
+    font-weight: 500;
 }
 
-.login-bar{
-    background-color: #7b5fc4;
-    padding: 20px;
-}
-
-.nav-bar-line{
+/* Navigation Elements (kept from original) */
+.nav-bar-line {
     background-color: #7b5fc4;
     padding: 5px;
 }
 
-.nav-button{
+.nav-button, .nav-aline-right {
     width: 100px;
     height: 50px;
     background-color: #A28DD6;
     font-size: 15px;
     margin-right: 10px;
-
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 }
-.nav-aline-right{
+
+.nav-button:hover, .nav-aline-right:hover {
+    background-color: #8c77c0;
+}
+
+.nav-aline-right {
     position: absolute;
-    right: 10px; /* Moves it to the right corner */
-    width: 100px;
-    height: 50px;
-    background-color: #A28DD6;
-    font-size: 15px;
+    right: 10px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 480px) {
+    .center-box {
+        padding: 1.5rem;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .login-button, .register-button {
+        width: 100%;
+    }
 }
