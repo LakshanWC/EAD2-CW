@@ -165,7 +165,7 @@ function Login({ onLogin }) {
                 </div>
 
                 <div className="login-footer">
-                    <p>© 2023 ABC Bank. All rights reserved.</p>
+                    <p>© 2025 ABC Bank. All rights reserved.</p>
                     <div className="security-info">
                         <i className="fas fa-lock"></i>
                         <span>Secure login</span>

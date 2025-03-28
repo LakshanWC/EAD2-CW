@@ -225,6 +225,40 @@
     color: #4CAF50;
 }
 
+/* src/Login.css - Updated password input section */
+.password-input-wrapper {
+    position: relative;
+}
+
+.password-input-wrapper input {
+    padding-right: 40px; /* Make space for the eye icon */
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #777;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 14px;
+    height: 24px;
+    width: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+}
+
+.toggle-password:hover {
+    color: #0077b6;
+    background-color: #f0f0f0;
+}
+
+
 /* Responsive adjustments */
 @media (max-width: 480px) {
     .login-container {
