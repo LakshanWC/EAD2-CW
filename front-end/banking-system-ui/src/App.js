@@ -33,6 +33,9 @@ import DeleteAccount from "./components/DeleteAccount";
 import "./App.css";
 
 
+
+
+
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
