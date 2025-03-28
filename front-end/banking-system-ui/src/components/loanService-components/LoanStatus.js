@@ -21,7 +21,7 @@ const UpdateStatus = () => {
 
         try {
             const response = await axios.put(
-                `http://localhost:8080/loan-service/loan/updateStatus/${loanId}?status=${status}`
+                `http://localhost:8082/loan-service/loan/updateStatus/${loanId}?status=${status}`
             );
 
             setMessage("Status updated successfully!");

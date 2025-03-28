@@ -74,7 +74,7 @@ const LoanApplicationForm = () => {
 
         try {
             const response = await axios.post(
-                "http://localhost:8080/loan-service/loan/apply",
+                "http://localhost:8082/loan-service/loan/apply",
                 {
                     firstName: formData.firstName,
                     secondName: formData.secondName,

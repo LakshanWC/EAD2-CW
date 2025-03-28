@@ -19,7 +19,7 @@ const LoanCalculator = () => {
         }
 
         try {
-            const response = await axios.get(`http://localhost:8080/loan-service/loan/details/${loanId}`);
+            const response = await axios.get(`http://localhost:8082/loan-service/loan/details/${loanId}`);
             setLoanDetails(response.data);
         } catch (error) {
             setError("Failed to fetch loan details. Please check the ID and try again.");
