@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 class Home extends React.Component {
     constructor(props) {
@@ -128,25 +128,27 @@ class Home extends React.Component {
 
                     <div style={styles.quickActions}>
                         <h3 style={styles.sectionTitle}>Quick Actions</h3>
-                        <div style={styles.actionButtons}>
+                        <div style={styles.actionButtons}><Link to={"/transaction-service"} style={{ textDecoration: 'none' }}>
                             <button style={styles.actionButton}>
                                 <svg style={styles.actionIcon} viewBox="0 0 24 24">
                                     <path fill="#4f46e5" d="M11,13.5V21.5H3V13.5H11M12,2L17.5,11H6.5L12,2M17.5,13C20,13 22,15 22,17.5C22,20 20,22 17.5,22C15,22 13,20 13,17.5C13,15 15,13 17.5,13Z" />
                                 </svg>
                                 Transfer Funds
-                            </button>
+                            </button></Link>
+                            <Link to={"/account"}  style={{ textDecoration: 'none' }}>
                             <button style={styles.actionButton}>
                                 <svg style={styles.actionIcon} viewBox="0 0 24 24">
                                     <path fill="#4f46e5" d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,10.5A1.5,1.5 0 0,0 10.5,12A1.5,1.5 0 0,0 12,13.5A1.5,1.5 0 0,0 13.5,12A1.5,1.5 0 0,0 12,10.5M7.5,10.5A1.5,1.5 0 0,0 6,12A1.5,1.5 0 0,0 7.5,13.5A1.5,1.5 0 0,0 9,12A1.5,1.5 0 0,0 7.5,10.5M16.5,10.5A1.5,1.5 0 0,0 15,12A1.5,1.5 0 0,0 16.5,13.5A1.5,1.5 0 0,0 18,12A1.5,1.5 0 0,0 16.5,10.5Z" />
                                 </svg>
                                 View Accounts
-                            </button>
+                            </button></Link>
+                            <Link to={"/user-service"} style={{ textDecoration: 'none' }}>
                             <button style={styles.actionButton}>
                                 <svg style={styles.actionIcon} viewBox="0 0 24 24">
                                     <path fill="#4f46e5" d="M12,1L3,5V11C3,16.55 6.84,21.74 12,23C17.16,21.74 21,16.55 21,11V5L12,1M12,11.99H19V10.9C19,9.21 16.92,7.9 15.2,7.9C13.48,7.9 11.5,9.21 11.5,10.9V12H12V11.99M11,12V11.5C11,10.67 11.67,10 12.5,10C13.33,10 14,10.67 14,11.5V12H11Z" />
                                 </svg>
                                 Security
-                            </button>
+                            </button></Link>
                         </div>
                     </div>
 

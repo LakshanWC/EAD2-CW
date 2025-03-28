@@ -16,7 +16,7 @@ import LoanCalculator from "./components/loanService-components/LoanCalculator";
 import LoanStatus from "./components/loanService-components/LoanStatus";
 import LoanApplicationDelete from "./components/loanService-components/LoanApplicationDelete";
 import WithDrawAndDeposit from "./components/transaction-components/WithDrawAndDeposit";
-import AdminView from "./components/transaction-components/AdminView";
+import AdminView from "./components/transaction-components/TransactionManager";
 
 //user service import
 import Register from "./components/user-components/Register";
@@ -31,6 +31,7 @@ import CreateAccount from "./components/CreateAccount";
 import UpdateAccount from "./components/UpdateAccount";
 import DeleteAccount from "./components/DeleteAccount";
 import "./App.css";
+import TransactionManager from "./components/transaction-components/TransactionManager";
 
 
 function App() {
@@ -45,8 +46,11 @@ function App() {
     };
 
     const handleLogout =()=>{
-        setIsLoggedIn(false);
-        setCurrentUser(null);
+        const confirmLogout = window.confirm("Are you sure you want to logout?");
+        if (confirmLogout) {
+            setIsLoggedIn(false);
+            setCurrentUser(null);
+        }
     }
 
     const fetchAllAccounts = async () => {
@@ -70,7 +74,7 @@ function App() {
                         <Link to="/account">
                             <button onClick={() => setShowAllAccounts(false)}>Account Service</button>
                         </Link>
-                        <Link to="/transaction">
+                        <Link to="/transaction-service">
                             <button>Transaction Service</button>
                         </Link>
                         <Link to="/loan-service">
@@ -209,7 +213,7 @@ function App() {
                         }
                     />
                     <Route
-                        path="/transaction/*"
+                        path="/transaction-service/*"
                         element={
                             isLoggedIn ? (
                                 <>
@@ -220,7 +224,7 @@ function App() {
                                         <Route path="history" element={<TransactionHistory />} />
                                         <Route path={"withdraw"} element={<WithDrawAndDeposit/>}/>
                                         <Route path={"deposit"} element={<WithDrawAndDeposit/>}/>
-                                        <Route path={"admin-view"} element={<AdminView/>}/>
+                                        <Route path={"on-hold"} element={<TransactionManager/>}/>
                                     </Routes>
                                 </>
                             ) : (
