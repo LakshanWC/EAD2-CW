@@ -34,6 +34,9 @@ import "./App.css";
 import TransactionManager from "./components/transaction-components/TransactionManager";
 
 
+
+
+
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
