@@ -44,6 +44,11 @@ function App() {
         setCurrentUser(user);
     };
 
+    const handleLogout =()=>{
+        setIsLoggedIn(false);
+        setCurrentUser(null);
+    }
+
     const fetchAllAccounts = async () => {
         try {
             const response = await axios.get("http://localhost:8080/account-service/accounts");
@@ -74,6 +79,9 @@ function App() {
                         <Link to={"/user-service"}>
                             <button>User Service</button>
                         </Link>
+                        <Link>
+                            <button onClick={handleLogout} style={{background:"red"}}>Logout</button>
+                        </Link>
                     </div>
                 )}
 
@@ -99,8 +107,6 @@ function App() {
                     />
 
                     <Route path="/register" element={<Register />} />
-
-
 
                     {/* Home Microservice */}
                     <Route
