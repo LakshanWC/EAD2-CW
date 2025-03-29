@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Entity
+@Entity//mark ass entity
 @Table(name = "loanapplication")
 public class LoanApplication {
 
