@@ -12,45 +12,45 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-@RestController
-@RequestMapping("/loan")
-@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", allowCredentials = "true")
+@RestController //mark the class handle http request
+@RequestMapping("/loan") //all urls start with this
+@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", allowCredentials = "true")//allow requests from front-end
 public class LoanApplicationController {
 
     private final LoanApplicationService service;
 
-    @Autowired
+    @Autowired //automatically provide service when creating controller
     public LoanApplicationController(LoanApplicationService service) {
         this.service = service;
     }
 
-    @PostMapping("/apply")
+    @PostMapping("/apply")//handle post requests for apply
     public ResponseEntity<LoanApplication> applyForLoan(@RequestBody LoanApplication loanApplication) {
         LoanApplication savedApplication = service.saveLoanApplication(loanApplication);
         return new ResponseEntity<>(savedApplication, HttpStatus.CREATED);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/all") //get all lone details
     public ResponseEntity<List<LoanApplication>> getAllLoans() {
         List<LoanApplication> loans = service.getAllLoanApplications();
         return new ResponseEntity<>(loans, HttpStatus.OK);
     }
 
-    @GetMapping("/details/{id}")
+    @GetMapping("/details/{id}") //get loan details by id(path variable)
     public ResponseEntity<Map<String, Object>> getLoanDetails(@PathVariable Integer id) {
-        Map<String, Object> details = service.calculateLoanDetails(id);
-        return new ResponseEntity<>(details, HttpStatus.OK);
+        Map<String, Object> details = service.calculateLoanDetails(id);// call the calculate function in service method
+        return new ResponseEntity<>(details, HttpStatus.OK); //return the response
     }
 
-    @PutMapping("/updateStatus/{id}")
+    @PutMapping("/updateStatus/{id}")//put loan details
     public ResponseEntity<LoanApplication> updateLoanStatus(
             @PathVariable Integer id,
             @RequestParam LoanStatus status) {
         LoanApplication updatedApplication = service.updateLoanStatus(id, status);
         return new ResponseEntity<>(updatedApplication, HttpStatus.OK);
-    }
+    }//get url and status then update the db using updateLoanStatus method in service
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")//delete loan applcation
     public ResponseEntity<String> deleteLoanApplication(@PathVariable Integer id) {
         try {
             service.deleteLoanApplication(id); // Delete the loan application
@@ -58,6 +58,7 @@ public class LoanApplicationController {
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
+        //delete loan applcation using the id and if it is not found display the error message
     }
 
 
