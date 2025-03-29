@@ -22,13 +22,13 @@ function TransferPage() {
 
             // Check transaction service health
             console.log("Checking Transaction Service health...");
-            const transactionHealthResponse = await fetch("http://localhost:8085/transaction-service/transactions/health");
+            const transactionHealthResponse = await fetch("http://localhost:8765/transaction-service/transactions/health");
             const transactionHealth = await transactionHealthResponse.text();
             console.log("Transaction Service Response:", transactionHealth);
 
             // Check account service health
             console.log("Checking Account Service health...");
-            const accountHealthResponse = await fetch("http://localhost:8080/account-service/accounts/health");
+            const accountHealthResponse = await fetch("http://localhost:8765/account-service/accounts/health");
             const accountHealth = await accountHealthResponse.text();
             console.log("Account Service Response:", accountHealth);
 
@@ -67,7 +67,7 @@ function TransferPage() {
     const validateAccount = async (accountNumber, setMessage, label) => {
         try {
             console.log(`Validating ${label.toLowerCase()} account: ${accountNumber}`);
-            const response = await fetch(`http://localhost:8085/transaction-service/accounts/${accountNumber}`);
+            const response = await fetch(`http://localhost:8765/transaction-service/accounts/${accountNumber}`);
             if (!response.ok) {
                 throw new Error("Account validation failed");
             }
@@ -99,7 +99,7 @@ function TransferPage() {
         try {
             console.log(`Checking balance for account ${accountNumber} with amount ${amount}`);
             const response = await fetch(
-                `http://localhost:8085/transaction-service/accounts/${accountNumber}/balance?amount=${amount}`
+                `http://localhost:8765/transaction-service/accounts/${accountNumber}/balance?amount=${amount}`
             );
 
             if (!response.ok) {
@@ -200,7 +200,7 @@ function TransferPage() {
         try {
             // Save the transaction
             console.log("Saving transaction...");
-            const response = await fetch("http://localhost:8085/transaction-service/transactions", {
+            const response = await fetch("http://localhost:8765/transaction-service/transactions", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -222,7 +222,7 @@ function TransferPage() {
                 // Deduct the amount from the source account (new endpoint)
                 console.log("Deducting from source account (account-service)...");
                 const withdrawResponse = await fetch(
-                    `http://localhost:8080/account-service/accounts/upBalance?accountNumber=${sourceAccount}&amount=${amount}&operation=withdrawal`,
+                    `http://localhost:8765/account-service/accounts/upBalance?accountNumber=${sourceAccount}&amount=${amount}&operation=withdrawal`,
                     {
                         method: "POST",
                     }
@@ -235,7 +235,7 @@ function TransferPage() {
                 // Subtract the amount from the source account (existing endpoint)
                 console.log("Deducting from source account (transaction-service)...");
                 const subtractResponse = await fetch(
-                    `http://localhost:8085/transaction-service/accounts/${sourceAccount}?amount=${amount}&addAmount=false`,
+                    `http://localhost:8765/transaction-service/accounts/${sourceAccount}?amount=${amount}&addAmount=false`,
                     {
                         method: "PATCH",
                     }
@@ -248,7 +248,7 @@ function TransferPage() {
                 // Add the amount to the destination account (new endpoint)
                 console.log("Adding to destination account (account-service)...");
                 const depositResponse = await fetch(
-                    `http://localhost:8080/account-service/accounts/upBalance?accountNumber=${destinationAccount}&amount=${amount}&operation=deposit`,
+                    `http://localhost:8765/account-service/accounts/upBalance?accountNumber=${destinationAccount}&amount=${amount}&operation=deposit`,
                     {
                         method: "POST",
                     }
@@ -261,7 +261,7 @@ function TransferPage() {
                 // Add the amount to the destination account (existing endpoint)
                 console.log("Adding to destination account (transaction-service)...");
                 const addResponse = await fetch(
-                    `http://localhost:8085/transaction-service/accounts/${destinationAccount}?amount=${amount}&addAmount=true`,
+                    `http://localhost:8765/transaction-service/accounts/${destinationAccount}?amount=${amount}&addAmount=true`,
                     {
                         method: "PATCH",
                     }

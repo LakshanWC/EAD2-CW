@@ -14,7 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/loan")
-@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", allowCredentials = "true")
+//@CrossOrigin(origins = "http://localhost:3000", allowedHeaders = "*", allowCredentials = "true")
 public class LoanApplicationController {
 
     private final LoanApplicationService service;

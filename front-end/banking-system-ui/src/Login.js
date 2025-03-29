@@ -38,7 +38,7 @@ function Login({ onLogin }) {
         if (username && password) {
             try {
                 const response = await fetch(
-                    `http://localhost:8086/user-service/users/validate/?userName=${username}&password=${password}`
+                    `http://localhost:8765/user-service/users/validate/?userName=${username}&password=${password}`
                 );
                 const result = await response.text();
 

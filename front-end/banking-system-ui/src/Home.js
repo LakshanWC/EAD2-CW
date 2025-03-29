@@ -15,7 +15,7 @@ class Home extends React.Component {
 
         try {
             console.log("Fetching account data...");
-            const accountResponse = await fetch("http://localhost:8080/account-service/accounts");
+            const accountResponse = await fetch("http://localhost:8765/account-service/accounts");
 
             if (!accountResponse.ok) {
                 throw new Error(`Account Service Error: ${accountResponse.statusText}`);
@@ -34,7 +34,7 @@ class Home extends React.Component {
             console.log("Transformed Data:", transformedData);
 
             console.log("Sending data to transaction-service...");
-            const transactionResponse = await fetch("http://localhost:8085/transaction-service/accounts/batch", {
+            const transactionResponse = await fetch("http://localhost:8765/transaction-service/accounts/batch", {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"

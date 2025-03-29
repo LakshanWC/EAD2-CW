@@ -32,7 +32,7 @@ class Register extends Component {
         if (!username) return true;
 
         try {
-            const response = await fetch(`http://localhost:8086/user-service/users/check/${username}`);
+            const response = await fetch(`http://localhost:8765/user-service/users/check/${username}`);
             const data = await response.json();
             return data === null;
         } catch (error) {
@@ -73,7 +73,7 @@ class Register extends Component {
         };
 
         try {
-            const response = await fetch('http://localhost:8086/user-service/users/register', {
+            const response = await fetch('http://localhost:8765/user-service/users/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(registrationData)

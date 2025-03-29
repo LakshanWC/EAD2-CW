@@ -20,7 +20,7 @@ function DeleteAccount({ fetchAllAccounts }) {
 
         try {
             const response = await axios.delete(
-                `http://localhost:8080/account-service/accounts/${deleteAccountId}`
+                `http://localhost:8765/account-service/accounts/${deleteAccountId}`
             );
 
             // If the backend returns a 200 OK response

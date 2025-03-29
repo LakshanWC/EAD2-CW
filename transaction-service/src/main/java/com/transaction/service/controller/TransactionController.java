@@ -1,5 +1,6 @@
 package com.transaction.service.controller;
 
+import com.netflix.discovery.EurekaNamespace;
 import com.transaction.service.entity.Transaction;
 import com.transaction.service.repository.TransactionRepository;
 import com.transaction.service.service.TransactionService;
@@ -14,7 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("transactions")
 public class TransactionController {
 

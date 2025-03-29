@@ -29,7 +29,7 @@ const UserUpdate = () => {
     const handleSearchSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:8086/user-service/users/check/${searchUsername}`);
+            const response = await fetch(`http://localhost:8765/user-service/users/check/${searchUsername}`);
             const data = await response.json();
 
             console.log('Received Data:', data);
@@ -68,7 +68,7 @@ const UserUpdate = () => {
             console.log('Sending Data:', payload);
 
             try {
-                const response = await fetch('http://localhost:8086/user-service/users/update', {
+                const response = await fetch('http://localhost:8765/user-service/users/update', {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',

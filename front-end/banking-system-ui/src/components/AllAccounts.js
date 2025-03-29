@@ -9,7 +9,7 @@ const [showAllAccounts, setShowAllAccounts] = useState(false); // State to toggl
 // Function to fetch all accounts
 const handleViewAllAccounts = async () => {
     try {
-        const response = await axios.get("http://localhost:8080/account-service/accounts");
+        const response = await axios.get("http://localhost:8765/account-service/accounts");
         setAllAccounts(response.data); // Store fetched accounts in state
         setShowAllAccounts(true); // Show the form
     } catch (error) {

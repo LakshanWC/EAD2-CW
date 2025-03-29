@@ -15,7 +15,7 @@ const TransactionHistory = () => {
         setLoading(true);
         setError(null);
 
-        let apiUrl = `http://localhost:8085/transaction-service/transactions?accountNumber=${accountNumber}`;
+        let apiUrl = `http://localhost:8765/transaction-service/transactions?accountNumber=${accountNumber}`;
         if (transactionType) {
             apiUrl += `&transactionType=${transactionType}`;
         }

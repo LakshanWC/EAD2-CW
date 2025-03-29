@@ -7,7 +7,7 @@ const AllUsers = () => {
 
     useEffect(() => {
         // Fetch data from the API
-        fetch('http://localhost:8086/user-service/users/all')
+        fetch('http://localhost:8765/user-service/users/all')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');

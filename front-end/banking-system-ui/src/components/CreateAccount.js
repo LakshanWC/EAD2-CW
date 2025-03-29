@@ -24,7 +24,7 @@ function CreateAccount({ fetchAllAccounts }) {
         setError("");
 
         try {
-            const response = await axios.post("http://localhost:8080/account-service/accounts", {
+            const response = await axios.post("http://localhost:8765/account-service/accounts", {
                 userId: parseInt(userId),
                 accountNumber,
                 accountType,

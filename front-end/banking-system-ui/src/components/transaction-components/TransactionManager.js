@@ -9,7 +9,7 @@ const TransactionPage = () => {
     // Reusable function to fetch transactions
     const fetchTransactions = async () => {
         try {
-            const response = await fetch('http://localhost:8085/transaction-service/transactions/all');
+            const response = await fetch('http://localhost:8765/transaction-service/transactions/all');
             if (!response.ok) {
                 throw new Error('Failed to fetch data');
             }
@@ -35,7 +35,7 @@ const TransactionPage = () => {
         try {
             if (transactionType === 'DEPOSIT') {
                 // Handle deposit
-                const response = await fetch(`http://localhost:8085/transaction-service/accounts/${accountNumber}?amount=${amount}&addAmount=true`, {
+                const response = await fetch(`http://localhost:8765/transaction-service/accounts/${accountNumber}?amount=${amount}&addAmount=true`, {
                     method: 'PATCH',
                 });
                 if (!response.ok) {
@@ -43,7 +43,7 @@ const TransactionPage = () => {
                 }
             } else if (transactionType === 'WITHDRAW') {
                 // Handle withdrawal
-                const response = await fetch(`http://localhost:8085/transaction-service/accounts/${accountNumber}?amount=${amount}&addAmount=false`, {
+                const response = await fetch(`http://localhost:8765/transaction-service/accounts/${accountNumber}?amount=${amount}&addAmount=false`, {
                     method: 'PATCH',
                 });
                 if (!response.ok) {
@@ -52,7 +52,7 @@ const TransactionPage = () => {
             } else if (transactionType === 'TRANSFER') {
                 // Handle transfer
                 // Check if the account has sufficient balance
-                const balanceCheckResponse = await fetch(`http://localhost:8085/transaction-service/accounts/${accountNumber}/balance?amount=${amount}`);
+                const balanceCheckResponse = await fetch(`http://localhost:8765/transaction-service/accounts/${accountNumber}/balance?amount=${amount}`);
                 const balanceCheckText = await balanceCheckResponse.text(); // Handle response as plain text
 
                 if (balanceCheckText !== 'Sufficient Balance') {
@@ -60,7 +60,7 @@ const TransactionPage = () => {
                 }
 
                 // Deduct amount from the source account
-                const deductResponse = await fetch(`http://localhost:8085/transaction-service/accounts/${accountNumber}?amount=${amount}&addAmount=false`, {
+                const deductResponse = await fetch(`http://localhost:8765/transaction-service/accounts/${accountNumber}?amount=${amount}&addAmount=false`, {
                     method: 'PATCH',
                 });
                 if (!deductResponse.ok) {
@@ -68,7 +68,7 @@ const TransactionPage = () => {
                 }
 
                 // Add amount to the destination account
-                const addResponse = await fetch(`http://localhost:8085/transaction-service/accounts/${destinationAccountNumber}?amount=${amount}&addAmount=true`, {
+                const addResponse = await fetch(`http://localhost:8765/transaction-service/accounts/${destinationAccountNumber}?amount=${amount}&addAmount=true`, {
                     method: 'PATCH',
                 });
                 if (!addResponse.ok) {
@@ -77,7 +77,7 @@ const TransactionPage = () => {
             }
 
             // Update the transaction status on the server
-            const updateStatusResponse = await fetch(`http://localhost:8085/transaction-service/transactions/update/${transactionId}?transactionStatus=APPROVED`, {
+            const updateStatusResponse = await fetch(`http://localhost:8765/transaction-service/transactions/update/${transactionId}?transactionStatus=APPROVED`, {
                 method: 'PATCH',
             });
             if (!updateStatusResponse.ok) {

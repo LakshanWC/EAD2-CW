@@ -8,7 +8,7 @@ const Profile = ({ currentUser }) => {
     useEffect(() => {
         if (currentUser && currentUser.username) {
             // Construct the URL with the current user's username
-            const url = `http://localhost:8086/user-service/users/check/${currentUser.username}`;
+            const url = `http://localhost:8765/user-service/users/check/${currentUser.username}`;
 
             setLoading(true); // Set loading to true before making the API call
             setError(null); // Reset any previous errors

@@ -58,7 +58,7 @@ function App() {
 
     const fetchAllAccounts = async () => {
         try {
-            const response = await axios.get("http://localhost:8080/account-service/accounts");
+            const response = await axios.get("http://localhost:8765/account-service/accounts");
             setAllAccounts(response.data);
             setShowAllAccounts(true); // Show the table after fetching data
         } catch (error) {

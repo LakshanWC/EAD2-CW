@@ -3,8 +3,8 @@ import { useLocation } from "react-router-dom";
 import axios from "axios";
 
 // Constants for configuration
-const TRANSACTION_SERVICE_URL = "http://localhost:8085/transaction-service";
-const ACCOUNT_SERVICE_URL = "http://localhost:8080/account-service";
+const TRANSACTION_SERVICE_URL = "http://localhost:8765/transaction-service";
+const ACCOUNT_SERVICE_URL = "http://localhost:8765/account-service";
 const LARGE_TRANSACTION_THRESHOLD = 300000;
 const TRANSACTION_TYPES = {
     WITHDRAW: "WITHDRAW",
@@ -29,8 +29,8 @@ function WithdrawDepositPage() {
         accountService: false
     });
 
-    const isWithdraw = location.pathname === "/transaction/withdraw";
-    const isDeposit = location.pathname === "/transaction/deposit";
+    const isWithdraw = location.pathname === "/transaction-service/withdraw";
+    const isDeposit = location.pathname === "/transaction-service/deposit";
 
     const handleInputChange = (e) => {
         const { id, value } = e.target;
@@ -203,6 +203,10 @@ function WithdrawDepositPage() {
     const updateAccountBalance = async (accountNumber, amount, operation) => {
         try {
             console.log(`Updating account balance for ${accountNumber}, operation: ${operation}`);
+
+            // Correct operation values for the backend
+            const backendOperation = operation === TRANSACTION_TYPES.WITHDRAW ? "withdrawal" : "deposit";
+
             const response = await axios.post(
                 `${ACCOUNT_SERVICE_URL}/accounts/upBalance`,
                 null,
@@ -210,7 +214,7 @@ function WithdrawDepositPage() {
                     params: {
                         accountNumber,
                         amount,
-                        operation
+                        operation: backendOperation
                     }
                 }
             );
@@ -296,7 +300,7 @@ function WithdrawDepositPage() {
 
             // Only update balances if the transaction is not on hold
             if (status !== "ON HOLD") {
-                const operation = isWithdraw ? "withdrawal" : "deposit";
+                const operation = isWithdraw ? TRANSACTION_TYPES.WITHDRAW : TRANSACTION_TYPES.DEPOSIT;
                 const balanceUpdated = await updateAccountBalance(
                     formData.accountNumber,
                     amountValue,
@@ -337,6 +341,7 @@ function WithdrawDepositPage() {
         }
     };
 
+    // ... (rest of the component code remains the same)
     return (
         <div style={styles.container}>
             <h1 style={styles.title}>{isWithdraw ? "Withdraw" : "Deposit"}</h1>

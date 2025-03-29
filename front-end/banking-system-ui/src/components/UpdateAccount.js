@@ -27,7 +27,7 @@ function UpdateAccount({ fetchAllAccounts }) {
 
         try {
             const response = await axios.put(
-                `http://localhost:8080/account-service/accounts/${accID}`,
+                `http://localhost:8765/account-service/accounts/${accID}`,
                 updatedAccountData
             );
 
