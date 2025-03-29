@@ -10,9 +10,9 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
+/*@CrossOrigin(origins = "http://localhost:3000")*/
 @RestController
 @RequestMapping("/accounts")
-@CrossOrigin(origins = "http://localhost:3000")
 public class AccountController {
 
     @Autowired
@@ -25,6 +25,7 @@ public class AccountController {
     }
 
     //update balance
+    /*
     @PostMapping("/upBalance")
     public ResponseEntity<String> updateBalance(
             @RequestParam String accountNumber,
@@ -32,7 +33,7 @@ public class AccountController {
             @RequestParam String operation){
         return accountService.updateBalance(accountNumber, amount, operation);
 
-    }
+    }*/
 
     //check status
     /*
@@ -42,13 +43,15 @@ public class AccountController {
     }*/
 
     //update status
+    /*
     @PostMapping("/upStatus")
     public ResponseEntity<String> updateStatus(
             @RequestParam String accountNumber,
             @RequestParam String status) {
         accountService.updateStatus(accountNumber, status);
         return ResponseEntity.ok("Status updated successfully");
-    }
+    }*/
+
 
 
     // Get all accounts
@@ -71,7 +74,7 @@ public class AccountController {
 
     // Update account
     @PutMapping("/{accId}")
-    public Account updateAccount(@PathVariable int accId, @RequestBody Account updatedAccount) {
+    public ResponseEntity<String> updateAccount(@PathVariable int accId, @RequestBody Account updatedAccount) {
         return accountService.updateAccount(accId, updatedAccount);
     }
 
@@ -80,10 +83,4 @@ public class AccountController {
     public void deleteAccount(@PathVariable int accId) {
         accountService.deleteAccount(accId);
     }
-
-/*
-    @GetMapping("/health")
-    public ResponseEntity<String> checkHealth(){return ResponseEntity.ok("Health check OK");}
-
-*/
 }
