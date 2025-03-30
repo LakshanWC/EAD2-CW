@@ -58,7 +58,7 @@ public class LoanApplicationService {
         return response;
     }
 
-    // Update the status of a loan application
+    // Update the status of a loan applications
     public LoanApplication updateLoanStatus(Integer id, LoanStatus status) {
         LoanApplication loanApplication = getLoanApplicationById(id);
         loanApplication.setStatus(status); // Update the status

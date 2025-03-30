@@ -19,7 +19,7 @@ public class LoanApplicationController {
 
     private final LoanApplicationService service;
 
-    @Autowired
+    @Autowired //automatically provide service when creating controller
     public LoanApplicationController(LoanApplicationService service) {
         this.service = service;
     }
@@ -38,8 +38,8 @@ public class LoanApplicationController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Map<String, Object>> getLoanDetails(@PathVariable Integer id) {
-        Map<String, Object> details = service.calculateLoanDetails(id);
-        return new ResponseEntity<>(details, HttpStatus.OK);
+        Map<String, Object> details = service.calculateLoanDetails(id);// call the calculate function in service method
+        return new ResponseEntity<>(details, HttpStatus.OK); //return the response
     }
 
     @PutMapping("/{id}")
@@ -48,7 +48,8 @@ public class LoanApplicationController {
             @RequestParam LoanStatus status) {
         LoanApplication updatedApplication = service.updateLoanStatus(id, status);
         return new ResponseEntity<>(updatedApplication, HttpStatus.OK);
-    }
+    }//get url and status then update the db using updateLoanStatus method in service
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteLoanApplication(@PathVariable Integer id) {
@@ -58,9 +59,7 @@ public class LoanApplicationController {
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
+        //delete loan applcation using the id and if it is not found display the error message
     }
-
-
-
-
+    
 }

@@ -4,18 +4,18 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Entity
+@Entity//mark ass entity
 @Table(name = "loanapplication")
 public class LoanApplication {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//id is auto increatement and primarykey
     private Integer id;
 
     private String firstName;
     private String secondName;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.DATE)//take only the data without taking the time
     private Date dob;
 
     private String telNo;
@@ -23,7 +23,7 @@ public class LoanApplication {
 
     private BigDecimal amount;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING)//store enum values
     private LoanType loanType;
 
     @Temporal(TemporalType.DATE)

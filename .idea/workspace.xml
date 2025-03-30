@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ba5281d6-4943-4c59-9890-c2adf22aea35" name="Changes" comment="add some style to Register.js page">
+    <list default="true" id="ba5281d6-4943-4c59-9890-c2adf22aea35" name="Changes" comment="improve the interface of the main navigation bar">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/banking-system-ui/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/banking-system-ui/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/banking-system-ui/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/banking-system-ui/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/banking-system-ui/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/banking-system-ui/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-end/banking-system-ui/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-end/banking-system-ui/src/App.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +42,7 @@
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/jayaw/OneDrive/Documents/GitHub/EAD2-CW/loanService/pom.xml&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/jayaw/OneDrive/Documents/GitHub/EAD2-CW/transaction-service/pom.xml&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -83,7 +79,10 @@
       <updated>1742404399204</updated>
       <workItem from="1742404400376" duration="38000" />
       <workItem from="1743139611304" duration="1231000" />
-      <workItem from="1743160962000" duration="4994000" />
+      <workItem from="1743160962000" duration="5853000" />
+      <workItem from="1743167599306" duration="727000" />
+      <workItem from="1743236054171" duration="733000" />
+      <workItem from="1743261785217" duration="4876000" />
     </task>
     <task id="LOCAL-00001" summary="add some style to home.js">
       <option name="closed" value="true" />
@@ -117,17 +116,37 @@
       <option name="project" value="LOCAL" />
       <updated>1743163944225</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="improve the interface of the main navigation bar">
+      <option name="closed" value="true" />
+      <created>1743166248217</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1743166248217</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add some style to home.js" />
     <MESSAGE value="add some style to login.js" />
     <MESSAGE value="fix some bugs in login page" />
     <MESSAGE value="add some style to Register.js page" />
-    <option name="LAST_COMMIT_MESSAGE" value="add some style to Register.js page" />
+    <MESSAGE value="improve the interface of the main navigation bar" />
+    <option name="LAST_COMMIT_MESSAGE" value="improve the interface of the main navigation bar" />
   </component>
 </project>
