@@ -19,15 +19,18 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    //check balance
-    @GetMapping("/balance")
-    public Map<String, Object> checkBalance(@RequestParam String accountNumber){
-        return accountService.checkBalance(accountNumber);
+    @GetMapping
+    public Object getAccountInfo(@RequestParam(required = false) String accountNumber) {
+        if (accountNumber != null) {
+            return accountService.checkBalance(accountNumber);
+        } else {
+            return accountService.getAllAccounts();
+        }
     }
 
-    //update balance
 
-    @PostMapping("/upBalance")
+    //update balance
+    @PutMapping
     public ResponseEntity<String> updateBalance(
             @RequestParam String accountNumber,
             @RequestParam BigDecimal amount,
@@ -55,12 +58,6 @@ public class AccountController {
 
 
 
-    // Get all accounts
-    @GetMapping
-    public List<Account> getAllAccounts() {
-        return accountService.getAllAccounts();
-    }
-
     // Get account by ID
     @GetMapping("/{accId}")
     public Account getAccountById(@PathVariable int accId) {
@@ -84,7 +81,6 @@ public class AccountController {
     public void deleteAccount(@PathVariable int accId) {
         accountService.deleteAccount(accId);
     }
-
 
 
     @GetMapping("/health")

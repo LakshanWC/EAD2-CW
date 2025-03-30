@@ -20,7 +20,9 @@ public class TransactionService {
     private TransactionRepository transactionRepository;
 
     public List<Transaction> getTransactionsByFilters(String accountNumber, String transactionType) {
-        return transactionRepository.getTransactionsByFilters(accountNumber,transactionType);
+        if(accountNumber != null) {
+        return transactionRepository.getTransactionsByFilters(accountNumber,transactionType);}
+        else {return transactionRepository.getTransactionsByStatus(transactionType);}
     }
 
     public Transaction saveTransaction(Transaction transaction) {

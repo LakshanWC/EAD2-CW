@@ -11,7 +11,7 @@ const UserDelete = () => {
 
     const fetchUsers = async () => {
         try {
-            const response = await axios.get("http://localhost:8765/user-service/users/all");
+            const response = await axios.get("http://localhost:8765/user-service/users");
             setUsers(response.data);
         } catch (error) {
             console.error("Error fetching users:", error);
@@ -22,7 +22,7 @@ const UserDelete = () => {
 
     const handleDelete = (id) => {
         if (window.confirm("Are you sure you want to delete this user?")) {
-            axios.delete(`http://localhost:8765/user-service/users/delete/${id}`)
+            axios.delete(`http://localhost:8765/user-service/users/${id}`)
                 .then(() => {
                     fetchUsers();
                 })

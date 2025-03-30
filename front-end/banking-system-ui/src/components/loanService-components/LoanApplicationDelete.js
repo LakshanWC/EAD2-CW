@@ -19,7 +19,7 @@ const DeleteApplication = () => {
         if (!isConfirmed) return;
 
         try {
-            await axios.delete(`http://localhost:8765/loan-service/loan/delete/${loanId}`);
+            await axios.delete(`http://localhost:8765/loan-service/loan/${loanId}`);
             setMessage("Loan application deleted successfully!");
         } catch (error) {
             setError("Failed to delete loan application. Please check the ID and try again.");

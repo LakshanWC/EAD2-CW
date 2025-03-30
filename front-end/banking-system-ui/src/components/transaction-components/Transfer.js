@@ -99,7 +99,7 @@ function TransferPage() {
         try {
             console.log(`Checking balance for account ${accountNumber} with amount ${amount}`);
             const response = await fetch(
-                `http://localhost:8765/transaction-service/accounts/${accountNumber}/balance?amount=${amount}`
+                `http://localhost:8765/transaction-service/accounts/${accountNumber}?amount=${amount}`
             );
 
             if (!response.ok) {
@@ -222,9 +222,9 @@ function TransferPage() {
                 // Deduct the amount from the source account (new endpoint)
                 console.log("Deducting from source account (account-service)...");
                 const withdrawResponse = await fetch(
-                    `http://localhost:8765/account-service/accounts/upBalance?accountNumber=${sourceAccount}&amount=${amount}&operation=withdrawal`,
+                    `http://localhost:8765/account-service/accounts?accountNumber=${sourceAccount}&amount=${amount}&operation=withdrawal`,
                     {
-                        method: "POST",
+                        method: "PUT",
                     }
                 );
 
@@ -248,9 +248,9 @@ function TransferPage() {
                 // Add the amount to the destination account (new endpoint)
                 console.log("Adding to destination account (account-service)...");
                 const depositResponse = await fetch(
-                    `http://localhost:8765/account-service/accounts/upBalance?accountNumber=${destinationAccount}&amount=${amount}&operation=deposit`,
+                    `http://localhost:8765/account-service/accounts?accountNumber=${destinationAccount}&amount=${amount}&operation=deposit`,
                     {
-                        method: "POST",
+                        method: "PUT",
                     }
                 );
 

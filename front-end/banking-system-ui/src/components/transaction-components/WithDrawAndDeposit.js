@@ -147,7 +147,7 @@ function WithdrawDepositPage() {
         try {
             console.log(`Checking balance for account ${accountNumber} with amount ${amount}`);
             const response = await axios.get(
-                `${TRANSACTION_SERVICE_URL}/accounts/${accountNumber}/balance`,
+                `${TRANSACTION_SERVICE_URL}/accounts/${accountNumber}`,
                 { params: { amount } }
             );
             const result = response.data;
@@ -207,8 +207,8 @@ function WithdrawDepositPage() {
             // Correct operation values for the backend
             const backendOperation = operation === TRANSACTION_TYPES.WITHDRAW ? "withdrawal" : "deposit";
 
-            const response = await axios.post(
-                `${ACCOUNT_SERVICE_URL}/accounts/upBalance`,
+            const response = await axios.put(
+                `${ACCOUNT_SERVICE_URL}/accounts`,
                 null,
                 {
                     params: {

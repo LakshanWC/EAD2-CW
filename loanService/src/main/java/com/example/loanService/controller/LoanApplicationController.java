@@ -24,25 +24,25 @@ public class LoanApplicationController {
         this.service = service;
     }
 
-    @PostMapping("/apply")
+    @PostMapping
     public ResponseEntity<LoanApplication> applyForLoan(@RequestBody LoanApplication loanApplication) {
         LoanApplication savedApplication = service.saveLoanApplication(loanApplication);
         return new ResponseEntity<>(savedApplication, HttpStatus.CREATED);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<LoanApplication>> getAllLoans() {
         List<LoanApplication> loans = service.getAllLoanApplications();
         return new ResponseEntity<>(loans, HttpStatus.OK);
     }
 
-    @GetMapping("/details/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Map<String, Object>> getLoanDetails(@PathVariable Integer id) {
         Map<String, Object> details = service.calculateLoanDetails(id);
         return new ResponseEntity<>(details, HttpStatus.OK);
     }
 
-    @PutMapping("/updateStatus/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<LoanApplication> updateLoanStatus(
             @PathVariable Integer id,
             @RequestParam LoanStatus status) {
@@ -50,7 +50,7 @@ public class LoanApplicationController {
         return new ResponseEntity<>(updatedApplication, HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteLoanApplication(@PathVariable Integer id) {
         try {
             service.deleteLoanApplication(id); // Delete the loan application

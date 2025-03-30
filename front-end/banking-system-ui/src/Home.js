@@ -34,7 +34,7 @@ class Home extends React.Component {
             console.log("Transformed Data:", transformedData);
 
             console.log("Sending data to transaction-service...");
-            const transactionResponse = await fetch("http://localhost:8765/transaction-service/accounts/batch", {
+            const transactionResponse = await fetch("http://localhost:8765/transaction-service/accounts", {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json"

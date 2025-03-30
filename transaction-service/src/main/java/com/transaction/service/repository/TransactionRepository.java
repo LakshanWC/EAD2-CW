@@ -23,6 +23,9 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
     @Query("UPDATE Transaction t SET t.status=?2 WHERE t.transactionId =?1")
     public int updateTransactionStatusById(int id, String status);
 
+    @Query("select t from Transaction t where t.status=?1")
+    public List<Transaction> getTransactionsByStatus(String status);
+
     @Modifying
     @Query("UPDATE Transaction t SET t.isActive=?2 WHERE t.transactionId=?1")
     public int hideTransactionById(int id,int is_active);

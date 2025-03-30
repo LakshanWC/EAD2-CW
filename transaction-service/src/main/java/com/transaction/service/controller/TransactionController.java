@@ -28,9 +28,11 @@ public class TransactionController {
     //to filter out the recodes
     @Autowired
     private TransactionService transactionService;
+
+
     @GetMapping
     public List<Transaction> getTransactionsByFilters(
-            @Validated @RequestParam String accountNumber,
+            @Validated @RequestParam(required = false)String accountNumber,
             @Validated @RequestParam(required = false) String transactionType){
         return transactionService.getTransactionsByFilters(accountNumber, transactionType);
     }
@@ -41,11 +43,12 @@ public class TransactionController {
         return transactionService.saveTransaction(transaction);
     }
 
+    /*
     //mark as hidden in the column in  the given recode by the id
     @PatchMapping(path = "{id}")
     public String hideTransactionById(@PathVariable int id) {
        return transactionService.hideTransactionById(id,0);
-    }
+    }*/
 
     //get a transaction recode by the id
     @GetMapping(path = "/{id}")
@@ -54,7 +57,7 @@ public class TransactionController {
     }
 
     //this will update transactoinStatus only from a given id
-    @PatchMapping(path = "update/{id}")
+    @PatchMapping(path = "/{id}")
     public String updateTransactionStatusById(@Validated @PathVariable int id ,@RequestParam String transactionStatus){
         return transactionService.updateTransactionStatusById(id,transactionStatus);
     }
@@ -63,9 +66,6 @@ public class TransactionController {
     public String resetHiddenTransactions(@PathVariable String accountNumber,@RequestParam boolean resetHidden) {
         return transactionService.resetHiddenTransactions(accountNumber,resetHidden);
     }
-
-    @GetMapping(path = "/all")
-    public List<Transaction> getAllTransactions() {return transactionService.getAllTransactions();}
 
 
     @GetMapping( "/health")

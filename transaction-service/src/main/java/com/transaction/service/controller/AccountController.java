@@ -21,13 +21,12 @@ public class AccountController {
         return accountService.isValidAccount(accountNumber);
     }
 
-    @GetMapping(path = {"/{accountNumber}/balance"},params = {"amount"})
+    @GetMapping(path = {"/{accountNumber}"},params = {"amount"})
     public String isBalanceSufficient(@PathVariable("accountNumber") String accountNumber,
                                       @RequestParam(value = "amount") float amount) {
         return accountService.isBalanceSufficient(accountNumber,amount);
     }
     
-    //http://localhost:8085/transaction-service/accounts/ACCT1234567890123456?amount=550&addAmount=true
 
     @PatchMapping(path = {"/{accountNumber}"},params = {"amount","addAmount"})
     public String updateBalanceAdd(@PathVariable String accountNumber,
@@ -36,8 +35,7 @@ public class AccountController {
         return accountService.updateBalanceAdd(accountNumber,amount,addAmount);
     }
 
-    //http://localhost:8085/transaction-service/accounts/batch
-    @PatchMapping(path = "/batch")
+    @PatchMapping
     public ResponseEntity updateAccountData(@RequestBody List<Account> accounts) {
         List<Account> updatedAccounts = accountService.updateOrAddAccounts(accounts);
         return ResponseEntity.ok(updatedAccounts);

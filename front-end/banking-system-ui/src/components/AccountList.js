@@ -53,7 +53,7 @@ function AccountList({ showAllAccounts, allAccounts, currentUser, fetchAllAccoun
 
             // Make the API call to fetch account details
             const response = await axios.get(
-                `http://localhost:8765/account-service/accounts/balance?accountNumber=${accountNumber}`
+                `http://localhost:8765/account-service/accounts?accountNumber=${accountNumber}`
             );
 
             console.log("Response from backend:", response);
