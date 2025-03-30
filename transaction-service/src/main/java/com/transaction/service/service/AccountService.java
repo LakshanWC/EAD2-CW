@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,15 +61,36 @@ public class AccountService {
     }
 
 
+    @Transactional
     public List<Account> updateOrAddAccounts(List<Account> accounts) {
         List<Account> updatedAccounts = new ArrayList<>();
+        Set<String> incomingAccountNumbers = new HashSet<>();
 
+        // First pass: collect all incoming account numbers to check for duplicates in the input
         for (Account account : accounts) {
+            if (!incomingAccountNumbers.add(account.getAccountNumber())) {
+                // This account number was already seen in the input list - skip it
+                continue;
+            }
+
+            // Check for duplicates in database
+            List<Account> duplicateAccounts = accountRepository.findAllByAccountNumber(account.getAccountNumber());
+
+            // If duplicate, keep the most recent one and delete others
+            if (duplicateAccounts.size() > 1) {
+                // Sort by lastUpdatedAt descending to get the most recent
+                duplicateAccounts.sort((a1, a2) -> a2.getLastUpdatedAt().compareTo(a1.getLastUpdatedAt()));
+
+                // Keep most recent and delete the rest
+                for (int i = 1; i < duplicateAccounts.size(); i++) {
+                    accountRepository.delete(duplicateAccounts.get(i));
+                }
+            }
 
             Optional<Account> existingAccount = accountRepository.findByAccountNumber(account.getAccountNumber());
 
             if (existingAccount.isPresent()) {
-                // update existing data
+                // update existing account
                 Account updatedAccount = existingAccount.get();
                 updatedAccount.setBalance(account.getBalance());
                 updatedAccount.setAccountType(account.getAccountType());
@@ -75,11 +98,20 @@ public class AccountService {
                 updatedAccount.setLastUpdatedAt(LocalDateTime.now());
                 updatedAccounts.add(accountRepository.save(updatedAccount));
             } else {
-                // add as a new row
+                // add new account
                 account.setLastUpdatedAt(LocalDateTime.now());
                 updatedAccounts.add(accountRepository.save(account));
             }
         }
+
+        // Delete accounts are not in incoming list
+        List<Account> allExistingAccounts = accountRepository.findAll();
+        for (Account existingAccount : allExistingAccounts) {
+            if (!incomingAccountNumbers.contains(existingAccount.getAccountNumber())) {
+                accountRepository.delete(existingAccount);
+            }
+        }
+
         return updatedAccounts;
     }
 

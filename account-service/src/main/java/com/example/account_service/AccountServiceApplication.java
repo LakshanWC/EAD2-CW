@@ -12,7 +12,7 @@ public class AccountServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AccountServiceApplication.class, args);
 	}
-
+/*
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {
 		return new WebMvcConfigurer() {
@@ -25,5 +25,5 @@ public class AccountServiceApplication {
 						.exposedHeaders("*"); // Expose all headers to the frontend
 			}
 		};
-	}
+	}*/
 }

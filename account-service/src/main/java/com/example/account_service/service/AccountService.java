@@ -38,7 +38,7 @@ public class AccountService {
 
     //update the balance
     //http://localhost:8080/accounts/upBalance?accountNumber=11110&amount=2000&operation=deposit/withdrawal
-    /*
+
     public ResponseEntity<String> updateBalance
     (String accountNumber, BigDecimal amount, String operation){
         Account account = accountRepository.findByAccountNumber(accountNumber);
@@ -67,7 +67,7 @@ public class AccountService {
         }else{
             return ResponseEntity.badRequest().body("Invalid operation. ");
         }
-    }*/
+    }
 
     // Get all accounts
     //http://localhost:8080/accounts
@@ -83,39 +83,14 @@ public class AccountService {
     }
 
     // Create a new account
-    /*
-    public Account createAccount(Account account) {
-        if (!"ADMIN".equals(account.getRole())){
-            throw new RuntimeException("Unauthorized access. Only admins can create accounts");
-        }
-        return accountRepository.save(account);
-    }*/
+
     public Account createAccount(Account account) {
         System.out.println("Creating account: " + account); // Log the account details
         return accountRepository.save(account);
     }
 
     // Update an existing account
-    /*
-    public ResponseEntity<String> updateAccount(int accId, Account updatedAccount){
-        Optional<Account> existingAccount = accountRepository.findById(accId);
-        if(existingAccount.isEmpty()){
-            return ResponseEntity.badRequest().body("Account not found.");
-        }
-        Account account = existingAccount.get();
 
-        if(!"ADMIN".equals(account.getRole())){
-            return ResponseEntity.badRequest().body("Unauthorized access. Only admins can update accounts.");
-        }
-        account.setAccountNumber(updatedAccount.getAccountNumber());
-        account.setAccountType(updatedAccount.getAccountType());
-        account.setBalance(updatedAccount.getBalance());
-        account.setStatus(updatedAccount.getStatus());
-        account.setRole(updatedAccount.getRole());
-
-        accountRepository.save(account);
-        return ResponseEntity.ok("Account updated successfully.");
-    }*/
     @Transactional
     public ResponseEntity<String> updateAccount(int accId, Account updatedAccount) {
         System.out.println("Received data: " + updatedAccount);
@@ -154,19 +129,6 @@ public class AccountService {
         return ResponseEntity.ok("Account updated successfully.");
     }
 
-    // Delete an account
-    /*
-    public ResponseEntity<String> deleteAccount(int accId){
-        Optional<Account> account = accountRepository.findById(accId);
-        if(account.isEmpty()){
-            return ResponseEntity.badRequest().body("Account not found.");
-        }
-        if(!"ADMIN".equals(account.get().getRole())){
-            return ResponseEntity.badRequest().body("Unauthorized access. Only admins can delete accounts.");
-        }
-        accountRepository.deleteById(accId);
-        return ResponseEntity.ok("Account deleted successfully.");
-    }*/
 
     @Transactional
     public ResponseEntity<String> deleteAccount(int accId) {

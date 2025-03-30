@@ -26,7 +26,7 @@ public class AccountController {
     }
 
     //update balance
-    /*
+
     @PostMapping("/upBalance")
     public ResponseEntity<String> updateBalance(
             @RequestParam String accountNumber,
@@ -34,7 +34,7 @@ public class AccountController {
             @RequestParam String operation){
         return accountService.updateBalance(accountNumber, amount, operation);
 
-    }*/
+    }
 
     //check status
     /*
@@ -89,6 +89,5 @@ public class AccountController {
 
     @GetMapping("/health")
     public ResponseEntity<String> checkHealth(){return ResponseEntity.ok("Health check OK");}
-
 
 }

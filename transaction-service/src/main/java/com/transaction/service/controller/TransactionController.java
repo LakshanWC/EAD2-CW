@@ -14,10 +14,16 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 @RestController
 //@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("transactions")
 public class TransactionController {
+
+    private static final Logger log = LoggerFactory.getLogger(TransactionController.class);
 
     //to filter out the recodes
     @Autowired
@@ -61,6 +67,9 @@ public class TransactionController {
     @GetMapping(path = "/all")
     public List<Transaction> getAllTransactions() {return transactionService.getAllTransactions();}
 
+
     @GetMapping( "/health")
-    public ResponseEntity<String> checkHealth(){return ResponseEntity.ok("Health check OK");}
+    public ResponseEntity<String> checkHealth(){
+        log.info("Health check received at transaction-service");
+        return ResponseEntity.ok("Health check OK");}
 }
