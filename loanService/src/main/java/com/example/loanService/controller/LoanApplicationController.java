@@ -61,5 +61,5 @@ public class LoanApplicationController {
         }
         //delete loan applcation using the id and if it is not found display the error message
     }
-    
+
 }
