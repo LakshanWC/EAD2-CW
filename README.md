@@ -61,8 +61,8 @@ The Online Banking System is a web-based application that manages banking functi
 
 ## Contributors
 
-- Samidu
-- Lakshan
+- [Samidu](https://github.com/SamiduSamarasinghe)
+- [Lakshan](https://github.com/LakshanWC)
 - Umanga
 - Wasath
 
